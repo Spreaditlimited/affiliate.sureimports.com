@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import { GoogleAnalytics } from '@next/third-parties/google';
+import Script from 'next/script';
+import { CookieNotice } from '@/app/components/CookieNotice';
 import { ThemeProvider } from '@/app/components/ThemeProvider';
 import './globals.css';
 
@@ -64,8 +66,32 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
+      <head>
+        <Script
+          id="affiliate-google-consent-default"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              var affiliateConsent = null;
+              try { affiliateConsent = localStorage.getItem('sure-imports-affiliate-cookie-consent'); } catch (error) {}
+              gtag('consent', 'default', {
+                analytics_storage: affiliateConsent === 'analytics' ? 'granted' : 'denied',
+                ad_storage: 'denied',
+                ad_user_data: 'denied',
+                ad_personalization: 'denied',
+                functionality_storage: 'granted',
+                security_storage: 'granted',
+                wait_for_update: 500
+              });
+            `,
+          }}
+        />
+      </head>
       <body className={inter.className}>
         <ThemeProvider>{children}</ThemeProvider>
+        <CookieNotice />
         <GoogleAnalytics gaId={gaMeasurementId} />
       </body>
     </html>
