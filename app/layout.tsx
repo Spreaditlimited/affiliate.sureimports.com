@@ -10,7 +10,17 @@ export const metadata: Metadata = {
   title: 'Sure Imports Affiliate Program — Recommend. Refer. Earn.',
   description:
     'Earn transparent commissions when people and businesses purchase eligible Sure Imports services through your referral.',
-  icons: { icon: '/favicon.png' },
+  icons: {
+    icon: [
+      {
+        url: '/favicon.png?v=2',
+        type: 'image/png',
+        sizes: '300x300',
+      },
+    ],
+    shortcut: '/favicon.png?v=2',
+    apple: '/favicon.png?v=2',
+  },
   openGraph: {
     type: 'website',
     url: '/',
