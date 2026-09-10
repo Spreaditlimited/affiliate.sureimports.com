@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 const PUBLIC_FILE = /\.[a-zA-Z0-9]+$/;
+const PUBLIC_PAGES = ['/', '/affiliate-terms'];
 const AUTH_PAGES = ['/sign-in', '/sign-up', '/forgot-password', '/verify-email', '/reset-password'];
 const AFFILIATE_API_PREFIXES = ['/api/account', '/api/exports', '/api/payout-accounts', '/api/payouts'];
 
@@ -13,7 +14,7 @@ export function proxy(request: NextRequest) {
   const isLocalDevelopment = process.env.NODE_ENV === 'development';
 
   if (
-    pathname === '/' ||
+    PUBLIC_PAGES.some((route) => matchesRoute(pathname, route)) ||
     pathname === '/api/waitlist' ||
     pathname.startsWith('/api/auth/') ||
     AUTH_PAGES.some((route) => pathname === route || pathname.startsWith(`${route}/`)) ||
