@@ -16,6 +16,10 @@
   backdrop-filter: blur(18px);
 }
 
+.mobileClearance {
+  display: none;
+}
+
 .icon {
   width: 42px;
   height: 42px;
@@ -138,6 +142,11 @@
     width: 100%;
     min-height: 42px;
     padding-inline: 10px;
+  }
+
+  .mobileClearance {
+    display: block;
+    height: calc(280px + env(safe-area-inset-bottom));
   }
 }
 

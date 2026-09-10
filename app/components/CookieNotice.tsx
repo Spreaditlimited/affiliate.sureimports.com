@@ -61,33 +61,36 @@ export function CookieNotice() {
   if (!isVisible) return null;
 
   return (
-    <aside
-      className={styles.notice}
-      aria-label="Cookie preferences"
-      aria-live="polite"
-    >
-      <div className={styles.icon}>
-        <CookieIcon />
-      </div>
-      <div className={styles.content}>
-        <strong>Your privacy, your choice</strong>
-        <p>
-          We use essential cookies to keep affiliate accounts secure. With your
-          permission, we also use analytics cookies to understand how this site
-          is used.{' '}
-          <a href="https://www.sureimports.com/privacy-policy">
-            Privacy policy
-          </a>
-        </p>
-      </div>
-      <div className={styles.actions}>
-        <button type="button" onClick={() => saveChoice('essential')}>
-          Essential only
-        </button>
-        <button type="button" onClick={() => saveChoice('analytics')}>
-          Allow analytics
-        </button>
-      </div>
-    </aside>
+    <>
+      <aside
+        className={styles.notice}
+        aria-label="Cookie preferences"
+        aria-live="polite"
+      >
+        <div className={styles.icon}>
+          <CookieIcon />
+        </div>
+        <div className={styles.content}>
+          <strong>Your privacy, your choice</strong>
+          <p>
+            We use essential cookies to keep affiliate accounts secure. With
+            your permission, we also use analytics cookies to understand how
+            this site is used.{' '}
+            <a href="https://www.sureimports.com/privacy-policy">
+              Privacy policy
+            </a>
+          </p>
+        </div>
+        <div className={styles.actions}>
+          <button type="button" onClick={() => saveChoice('essential')}>
+            Essential only
+          </button>
+          <button type="button" onClick={() => saveChoice('analytics')}>
+            Allow analytics
+          </button>
+        </div>
+      </aside>
+      <div className={styles.mobileClearance} aria-hidden="true" />
+    </>
   );
 }
