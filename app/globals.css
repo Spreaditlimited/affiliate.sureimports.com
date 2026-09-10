@@ -62,6 +62,7 @@ select.searchable-select-native { position: absolute !important; width: 1px !imp
 .nav-shell { height: 78px; display: flex; align-items: center; justify-content: space-between; gap: 30px; }
 .brand { min-width: max-content; display: flex; align-items: center; }
 .logo { width: auto; height: 32px; object-fit: contain; }
+.grecaptcha-badge { visibility: hidden !important; }
 .logo-light { display: none; }
 .dark .logo-dark { display: none; }
 .dark .logo-light { display: block; }
@@ -662,7 +663,8 @@ select.searchable-select-native { position: absolute !important; width: 1px !imp
   .sidebar-collapsed .dashboard-user { justify-content: flex-start; padding: 17px 18px; }
   .sidebar-collapsed .dashboard-user div { display: grid; }
   .dashboard-scrim { position: fixed; z-index: 60; inset: 0; display: block; border: 0; background: rgba(0,0,0,.52); backdrop-filter: blur(3px); }
-  .dashboard-mobile-menu { position: fixed; z-index: 80; top: 18px; left: 16px; width: 40px; height: 40px; display: grid; place-items: center; padding: 0; border: 0; background: transparent; color: hsl(var(--foreground)); }
+  .dashboard-mobile-menu { position: fixed; z-index: 80; top: 18px; left: 16px; width: 40px; height: 40px; display: grid; place-items: center; padding: 0; border: 0; background: transparent; color: hsl(var(--foreground)); transition: left 180ms ease; }
+  .dashboard-mobile-menu.is-open { left: 172px; }
   .dashboard-workspace, .sidebar-collapsed .dashboard-workspace { margin-left: 0; }
   .dashboard-topbar { padding-left: 67px; }
   .dashboard-topbar > div:first-child span { display: none; }

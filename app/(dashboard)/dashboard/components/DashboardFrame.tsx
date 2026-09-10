@@ -42,7 +42,7 @@ export function DashboardFrame({ affiliate, notifications, children }: { affilia
     setCollapsed((current) => { const next = !current; window.localStorage.setItem('affiliate-sidebar-collapsed', String(next)); return next; });
   }
   return <div className={`affiliate-dashboard ${collapsed ? 'sidebar-collapsed' : ''}`}>
-    <button className="dashboard-mobile-menu" onClick={() => setMenuOpen(!menuOpen)} aria-label={menuOpen ? 'Close navigation' : 'Open navigation'}><Icon name={menuOpen ? 'close' : 'menu'} /></button>
+    <button className={`dashboard-mobile-menu ${menuOpen ? 'is-open' : ''}`} onClick={() => setMenuOpen(!menuOpen)} aria-label={menuOpen ? 'Close navigation' : 'Open navigation'}><Icon name={menuOpen ? 'close' : 'menu'} /></button>
     {menuOpen && <button className="dashboard-scrim" aria-label="Close navigation" onClick={() => setMenuOpen(false)} />}
     <aside className={`dashboard-sidebar ${menuOpen ? 'is-open' : ''}`} aria-label="Affiliate account navigation">
       <div className="dashboard-brand-row"><Link href="/dashboard" className="dashboard-brand"><Image className="logo logo-dark" src="/images/logo.png" width={200} height={32} style={{ width: 'auto' }} alt="Sure Imports" priority /><Image className="logo logo-light" src="/images/logo-white.png" width={200} height={32} style={{ width: 'auto' }} alt="Sure Imports" priority /><span>Affiliate</span></Link><button className="dashboard-collapse-button" type="button" onClick={toggleSidebar} aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'} title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}><Icon name="menu" /></button></div>

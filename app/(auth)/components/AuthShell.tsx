@@ -31,7 +31,7 @@ export function AuthShell({ eyebrow, title, description, children }: { eyebrow: 
         <div className="auth-heading"><p className="section-kicker">{eyebrow}</p><h1>{title}</h1><p>{description}</p></div>
         {children}
       </div>
-      <p className="auth-legal">Protected by encrypted data storage, secure sessions, and reCAPTCHA. Google <Link href="https://policies.google.com/privacy">Privacy</Link> and <Link href="https://policies.google.com/terms">Terms</Link> apply.</p>
+      <p className="auth-legal">This site is protected by reCAPTCHA and the Google <Link href="https://policies.google.com/privacy">Privacy Policy</Link> and <Link href="https://policies.google.com/terms">Terms of Service</Link> apply.</p>
     </section>
   </main>;
 }
