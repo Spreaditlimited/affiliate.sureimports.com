@@ -1,0 +1,377 @@
+.account-settings-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 15px;
+}
+
+.account-settings-panel {
+  min-height: 0;
+  overflow: visible;
+}
+
+.account-settings-panel > header > b {
+  padding: 5px 7px;
+  border-radius: 5px;
+  background: color-mix(in srgb, var(--success) 11%, transparent);
+  color: var(--success);
+  font-size: 8px;
+  text-transform: uppercase;
+}
+
+.settings-form {
+  display: grid;
+  gap: 17px;
+  padding: 22px;
+}
+
+.settings-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.settings-form label {
+  min-width: 0;
+  display: grid;
+  gap: 7px;
+  color: hsl(var(--foreground));
+  font-size: 9px;
+  font-weight: 750;
+  letter-spacing: .045em;
+  text-transform: uppercase;
+}
+
+.settings-form label:has(.searchable-select:focus-within),
+.settings-form-grid:has(.searchable-select:focus-within) {
+  position: relative;
+  z-index: 100;
+}
+
+.settings-form input:not([type='checkbox']),
+.settings-form .searchable-select-input {
+  width: 100%;
+  height: 44px;
+  padding: 0 12px;
+  border: 1px solid hsl(var(--border));
+  border-radius: 8px;
+  outline: none;
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font: inherit;
+  font-size: 11px;
+  font-weight: 550;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.settings-form input:focus,
+.settings-form .searchable-select-input:focus {
+  border-color: var(--indigo);
+  box-shadow: 0 0 0 3px var(--indigo-soft);
+}
+
+.settings-form input:disabled {
+  background: hsl(var(--secondary) / .7);
+  color: hsl(var(--muted-foreground));
+  cursor: not-allowed;
+}
+
+.settings-form label > small {
+  color: hsl(var(--muted-foreground));
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.55;
+  text-transform: none;
+}
+
+.settings-form .searchable-select {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+}
+
+.settings-form .searchable-select:focus-within {
+  z-index: 100;
+}
+
+.settings-form select.searchable-select-native {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  inset: auto auto 0 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.settings-form .searchable-select-input {
+  padding-right: 43px !important;
+  cursor: text;
+}
+
+.settings-form .searchable-select-toggle {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  right: 5px;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: hsl(var(--muted-foreground));
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+.settings-form .searchable-select-toggle:hover,
+.settings-form .searchable-select-toggle:focus-visible {
+  background: hsl(var(--secondary));
+  color: hsl(var(--foreground));
+  outline: none;
+}
+
+.settings-form .searchable-select-toggle svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.settings-form .searchable-select-options {
+  position: absolute;
+  z-index: 80;
+  top: calc(100% + 7px);
+  left: 0;
+  width: 100%;
+  max-height: 280px;
+  overflow-y: auto;
+  padding: 5px;
+  border: 1px solid hsl(var(--border));
+  border-radius: 10px;
+  background: hsl(var(--card));
+  box-shadow: 0 20px 55px hsl(var(--foreground) / .13);
+}
+
+.settings-form .searchable-select-options button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 10px 11px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: hsl(var(--foreground));
+  font-size: 12px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.settings-form .searchable-select-options button:hover,
+.settings-form .searchable-select-options button:focus-visible,
+.settings-form .searchable-select-options button.selected {
+  background: var(--indigo-soft);
+  color: var(--indigo);
+  outline: none;
+}
+
+.settings-form-footer {
+  min-height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-top: 2px;
+  padding-top: 17px;
+  border-top: 1px solid hsl(var(--border));
+}
+
+.settings-form-footer > span {
+  color: hsl(var(--muted-foreground));
+  font-size: 8px;
+  line-height: 1.55;
+}
+
+.settings-form-footer > span strong {
+  color: hsl(var(--foreground));
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.settings-form-footer .button {
+  flex: 0 0 auto;
+  height: 39px;
+  padding-inline: 15px;
+  font-size: 9px;
+}
+
+.settings-feedback {
+  margin: 0;
+  padding: 11px 13px;
+  border: 1px solid color-mix(in srgb, var(--success) 25%, transparent);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--success) 8%, transparent);
+  color: var(--success);
+  font-size: 9px;
+  font-weight: 650;
+  line-height: 1.55;
+  text-transform: none;
+}
+
+.settings-feedback.is-error {
+  border-color: color-mix(in srgb, #dc2626 25%, transparent);
+  background: color-mix(in srgb, #dc2626 8%, transparent);
+  color: #dc2626;
+}
+
+.account-session-panel {
+  grid-column: 1 / -1;
+}
+
+.account-session-panel > header .button {
+  height: 36px;
+  padding-inline: 13px;
+  font-size: 9px;
+}
+
+.settings-session-list {
+  display: grid;
+}
+
+.settings-session-list article {
+  min-height: 74px;
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 13px;
+  padding: 13px 21px;
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.settings-session-list article:last-child {
+  border-bottom: 0;
+}
+
+.session-indicator {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  background: hsl(var(--secondary));
+}
+
+.session-indicator i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: hsl(var(--muted-foreground));
+}
+
+.session-indicator.is-current {
+  background: color-mix(in srgb, var(--success) 10%, transparent);
+}
+
+.session-indicator.is-current i {
+  background: var(--success);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--success) 13%, transparent);
+}
+
+.settings-session-list article > div:nth-child(2) {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.settings-session-list strong {
+  font-size: 10px;
+}
+
+.settings-session-list span,
+.settings-session-list small {
+  overflow: hidden;
+  color: hsl(var(--muted-foreground));
+  font-size: 8px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.settings-session-list article > b {
+  padding: 5px 7px;
+  border-radius: 5px;
+  background: color-mix(in srgb, var(--success) 11%, transparent);
+  color: var(--success);
+  font-size: 8px;
+  text-transform: uppercase;
+}
+
+.settings-session-list article > button {
+  padding: 7px 10px;
+  border: 1px solid hsl(var(--border));
+  border-radius: 7px;
+  background: transparent;
+  color: hsl(var(--muted-foreground));
+  font: inherit;
+  font-size: 8px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.settings-session-list article > button:hover {
+  border-color: color-mix(in srgb, #dc2626 35%, hsl(var(--border)));
+  color: #dc2626;
+}
+
+.account-session-panel > .settings-feedback {
+  margin: 0 21px 18px;
+}
+
+@media (max-width: 650px) {
+  .account-settings-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .settings-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .settings-form-footer {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .settings-form-footer .button {
+    width: 100%;
+  }
+
+  .account-session-panel {
+    grid-column: auto;
+  }
+
+  .account-session-panel > header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .account-session-panel > header .button {
+    width: 100%;
+  }
+
+  .settings-session-list article {
+    grid-template-columns: 32px minmax(0, 1fr);
+  }
+
+  .settings-session-list article > b,
+  .settings-session-list article > button {
+    grid-column: 2;
+    justify-self: start;
+  }
+}

@@ -1,0 +1,55 @@
+.affiliate-legal-page { min-height: 100svh; background: hsl(var(--background)); }
+.affiliate-legal-container { position: relative; z-index: 2; width: 100%; max-width: 1440px; margin-inline: auto; padding-inline: 32px; }
+.affiliate-legal-hero { position: relative; overflow: hidden; padding: 76px 0 84px; background: hsl(var(--background)); color: hsl(var(--foreground)); }
+.affiliate-legal-grid, .affiliate-legal-glow { display: none; }
+.affiliate-legal-hero-copy { max-width: 770px; }
+.affiliate-legal-hero-copy > p { width: max-content; display: inline-flex; align-items: center; gap: 8px; margin: 0 0 24px; padding: 7px 13px; border: 1px solid rgba(129,140,248,.35); border-radius: 999px; background: rgba(99,102,241,.12); color: #a5b4fc; font-size: 10px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+.affiliate-legal-hero-copy svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.affiliate-legal-hero-copy h1 { margin: 0; font-size: clamp(48px, 5.4vw, 78px); line-height: .98; letter-spacing: -.06em; }
+.affiliate-legal-hero-copy > span { display: block; max-width: 720px; margin-top: 25px; color: hsl(var(--muted-foreground)); font-size: 17px; line-height: 1.72; }
+.affiliate-legal-body { padding: 64px 0 105px; }
+.affiliate-legal-layout { display: grid; grid-template-columns: 320px minmax(0, 1fr); align-items: start; gap: clamp(45px, 6vw, 78px); }
+.affiliate-legal-sidebar { position: sticky; top: 28px; display: grid; gap: 16px; }
+.affiliate-legal-card { border: 1px solid hsl(var(--border)); border-radius: 14px; background: hsl(var(--card)); box-shadow: var(--shadow); }
+.affiliate-document-details, .affiliate-legal-support { padding: 23px; }
+.affiliate-document-details > p { margin: 0 0 18px; color: hsl(var(--muted-foreground)); font-size: 9px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+.affiliate-document-details ul { display: grid; gap: 17px; margin: 0; padding: 0; list-style: none; }
+.affiliate-document-details li { display: flex; align-items: center; gap: 11px; color: hsl(var(--foreground)); font-size: 11px; font-weight: 650; }
+.affiliate-document-details svg, .affiliate-legal-support svg { flex: 0 0 auto; width: 17px; height: 17px; fill: none; stroke: var(--indigo); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.affiliate-legal-support > i { width: 43px; height: 43px; display: grid; place-items: center; border-radius: 10px; background: var(--indigo-soft); }
+.affiliate-legal-support h2 { margin: 18px 0 8px; font-size: 17px; letter-spacing: -.025em; }
+.affiliate-legal-support > p { margin: 0; color: hsl(var(--muted-foreground)); font-size: 11px; line-height: 1.7; }
+.affiliate-support-button { min-height: 42px; display: flex; align-items: center; justify-content: center; gap: 9px; margin-top: 22px; border: 1px solid hsl(var(--border)); border-radius: 8px; background: hsl(var(--background)); color: hsl(var(--foreground)); font-size: 10px; font-weight: 750; }
+.affiliate-support-button:hover { background: hsl(var(--secondary)); }
+.affiliate-legal-support > a:not(.affiliate-support-button) { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 15px; color: var(--indigo); font-size: 10px; font-weight: 750; }
+.affiliate-legal-support > a span { font-size: 18px; font-weight: 400; line-height: 1; }
+.affiliate-legal-content { padding: clamp(28px, 4vw, 48px); }
+.affiliate-legal-intro { margin: 0 0 46px; color: hsl(var(--muted-foreground)); font-size: 16px; line-height: 1.75; }
+.affiliate-legal-content > div { display: grid; gap: 47px; }
+.affiliate-legal-content section > span { display: inline-flex; padding: 6px 10px; border-radius: 6px; background: hsl(var(--secondary) / .72); color: var(--indigo); font-size: 9px; font-weight: 850; letter-spacing: .035em; text-transform: uppercase; }
+.affiliate-legal-content section h2 { margin: 13px 0 0; padding-bottom: 15px; border-bottom: 1px solid hsl(var(--border)); font-size: 22px; letter-spacing: -.035em; text-transform: capitalize; }
+.affiliate-legal-content section p { margin: 17px 0 0; color: hsl(var(--muted-foreground)); font-size: 13px; line-height: 1.82; }
+.affiliate-legal-content > footer { display: flex; flex-wrap: wrap; gap: 11px; margin-top: 48px; padding-top: 28px; border-top: 1px solid hsl(var(--border)); }
+.affiliate-legal-content > footer .button { min-height: 44px; padding-inline: 17px; font-size: 10px; }
+
+@media (max-width: 900px) {
+  .affiliate-legal-layout { grid-template-columns: 1fr; }
+  .affiliate-legal-sidebar { position: static; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 650px) {
+  .affiliate-legal-container { padding-inline: 16px; }
+  .affiliate-legal-hero { padding: 55px 0 62px; }
+  .affiliate-legal-hero-copy h1 { font-size: 45px; }
+  .affiliate-legal-hero-copy > span { font-size: 14px; }
+  .affiliate-legal-body { padding: 38px 0 72px; }
+  .affiliate-legal-layout { gap: 28px; }
+  .affiliate-legal-sidebar { grid-template-columns: 1fr; }
+  .affiliate-legal-content { padding: 24px 20px; }
+  .affiliate-legal-intro { margin-bottom: 38px; font-size: 14px; }
+  .affiliate-legal-content > div { gap: 38px; }
+  .affiliate-legal-content section h2 { font-size: 19px; }
+  .affiliate-legal-content section p { font-size: 12px; }
+  .affiliate-legal-content > footer { align-items: stretch; flex-direction: column; }
+  .affiliate-legal-content > footer .button { width: 100%; }
+}

@@ -1,0 +1,10 @@
+{
+  "conventionalCommits.scopes": [
+    "init",
+    "login",
+    "website",
+    "dashboard",
+    "affiliate"
+  ],
+  "typescript.tsdk": "node_modules\\typescript\\lib"
+}

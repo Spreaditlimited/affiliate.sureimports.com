@@ -1,0 +1,83 @@
+.payout-workspace { display: grid; gap: 15px; }
+.payout-balance-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px; }
+.payout-balance-card { min-width: 0; padding: 22px; border: 1px solid hsl(var(--border)); border-radius: 13px; background: hsl(var(--card)); }
+.payout-balance-heading { display: grid; grid-template-columns: 38px minmax(0, 1fr) auto; align-items: center; gap: 12px; }
+.payout-provider-icon { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 9px; background: var(--indigo-soft); color: var(--indigo); }
+.payout-currency-glyph { width: 19px; height: 19px; display: grid; place-items: center; color: currentColor; font-size: 14px; font-style: normal; font-weight: 750; line-height: 1; }
+.payout-provider-icon svg, .payout-provider-tabs > button > svg, .payout-check svg, .payout-provider-tabs i svg { width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 1.65; stroke-linecap: round; stroke-linejoin: round; }
+.payout-balance-heading > div { min-width: 0; display: grid; gap: 3px; }
+.payout-balance-heading small, .payout-balance-card > p, .payout-current-destination small, .payout-account-intro > div > span { color: hsl(var(--muted-foreground)); font-size: 8px; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; }
+.payout-balance-heading strong { font-size: 11px; }
+.payout-balance-card > p { margin: 28px 0 7px; }
+.payout-balance-card > h2 { margin: 0; font-size: clamp(28px, 2.6vw, 38px); letter-spacing: -.045em; }
+.payout-balance-footer { min-width: 0; display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-top: 24px; padding-top: 17px; border-top: 1px solid hsl(var(--border)); }
+.payout-balance-footer > span { overflow: hidden; color: hsl(var(--muted-foreground)); font-size: 9px; text-overflow: ellipsis; white-space: nowrap; }
+.payout-balance-footer .button { flex: 0 0 auto; height: 36px; padding-inline: 13px; font-size: 9px; }
+.payout-balance-footer .button:disabled, .payout-account-content .button:disabled { cursor: not-allowed; opacity: .55; transform: none; }
+.payout-account-panel { position: relative; z-index: 10; min-height: 0; overflow: visible; margin-top: 0; }
+.payout-account-panel > header > b { color: hsl(var(--muted-foreground)); font-size: 8px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+.payout-provider-tabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 14px 20px 0; }
+.payout-provider-tabs > button { position: relative; min-width: 0; min-height: 64px; display: grid; grid-template-columns: 28px minmax(0, 1fr) 24px; align-items: center; gap: 11px; padding: 10px 14px; border: 0; border-bottom: 1px solid hsl(var(--border)); background: transparent; color: hsl(var(--muted-foreground)); font: inherit; text-align: left; cursor: pointer; }
+.payout-provider-tabs > button::after { content: ''; position: absolute; height: 2px; inset: auto 0 -1px; background: transparent; }
+.payout-provider-tabs > button.active { color: hsl(var(--foreground)); }
+.payout-provider-tabs > button.active::after { background: var(--indigo); }
+.payout-provider-tabs > button > span { min-width: 0; display: grid; gap: 4px; }
+.payout-provider-tabs strong { font-size: 11px; }
+.payout-provider-tabs small { color: hsl(var(--muted-foreground)); font-size: 8px; }
+.payout-provider-tabs i { width: 20px; height: 20px; display: grid; place-items: center; border-radius: 50%; background: color-mix(in srgb, var(--success) 12%, transparent); color: var(--success); }
+.payout-provider-tabs i svg { width: 12px; height: 12px; }
+.payout-account-content { padding: 27px 34px 32px; }
+.payout-account-intro { display: flex; align-items: end; justify-content: space-between; gap: 30px; }
+.payout-account-intro > div:first-child { max-width: 540px; }
+.payout-account-intro > div > span { color: var(--indigo); }
+.payout-account-intro h2 { margin: 7px 0; font-size: 21px; letter-spacing: -.035em; }
+.payout-account-intro p { margin: 0; color: hsl(var(--muted-foreground)); font-size: 10px; line-height: 1.6; }
+.payout-current-destination { min-width: 230px; display: grid; gap: 5px; padding: 12px 14px; border: 1px solid hsl(var(--border)); border-radius: 9px; background: hsl(var(--secondary) / .4); }
+.payout-current-destination strong { font-size: 10px; }
+.payout-current-destination span { color: hsl(var(--muted-foreground)); font-size: 8px; }
+.payout-bank-fields, .payout-paypal-fields { display: grid; align-items: end; gap: 12px; margin-top: 26px; padding-top: 22px; border-top: 1px solid hsl(var(--border)); }
+.payout-bank-fields { grid-template-columns: minmax(190px, 1.3fr) minmax(170px, .8fr) auto; }
+.payout-paypal-fields { grid-template-columns: minmax(260px, 1fr) auto; }
+.payout-field-error { grid-column: 1 / -1; margin: 0; color: #dc2626; font-size: 9px; line-height: 1.55; }
+.payout-account-content label, .payout-otp-fields label { min-width: 0; display: grid; gap: 7px; }
+.payout-account-content label > span, .payout-otp-fields label > span { color: hsl(var(--muted-foreground)); font-size: 8px; font-weight: 750; letter-spacing: .06em; text-transform: uppercase; }
+.payout-account-content input, .payout-account-content select { width: 100%; height: 42px; padding: 0 12px; border: 1px solid hsl(var(--border)); border-radius: 8px; background: hsl(var(--background)); color: hsl(var(--foreground)); font: inherit; font-size: 11px; outline: none; }
+.payout-account-content input:focus, .payout-account-content select:focus { border-color: var(--indigo); box-shadow: 0 0 0 3px var(--indigo-soft); }
+.payout-inline-action, .payout-verification-strip .button, .payout-otp-fields .button { height: 42px; padding-inline: 15px; font-size: 9px; }
+.payout-verification-strip { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; align-items: center; gap: 12px; margin-top: 14px; padding: 13px; border: 1px solid color-mix(in srgb, var(--success) 24%, hsl(var(--border))); border-radius: 10px; background: color-mix(in srgb, var(--success) 5%, hsl(var(--card))); }
+.payout-check { width: 32px; height: 32px; display: grid; place-items: center; border-radius: 8px; background: color-mix(in srgb, var(--success) 12%, transparent); color: var(--success); }
+.payout-verification-strip > div { min-width: 0; display: grid; gap: 4px; }
+.payout-verification-strip small { color: hsl(var(--muted-foreground)); font-size: 8px; }
+.payout-verification-strip strong { overflow: hidden; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+.payout-otp-fields { display: grid !important; grid-template-columns: 145px auto; align-items: end; gap: 10px; }
+.payout-feedback { padding: 13px 15px; border: 1px solid color-mix(in srgb, var(--success) 25%, transparent); border-radius: 9px; background: color-mix(in srgb, var(--success) 9%, transparent); color: var(--success); font-size: 11px; font-weight: 650; }
+.payout-feedback.is-error { border-color: color-mix(in srgb, #dc2626 25%, transparent); background: color-mix(in srgb, #dc2626 9%, transparent); color: #dc2626; }
+
+@media (max-width: 1120px) {
+  .payout-bank-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .payout-bank-fields .payout-inline-action { grid-column: 1 / -1; justify-self: start; }
+}
+
+@media (max-width: 860px) {
+  .payout-account-content { padding-inline: 24px; }
+}
+
+@media (max-width: 650px) {
+  .payout-balance-grid { grid-template-columns: 1fr; }
+  .payout-balance-footer { align-items: stretch; flex-direction: column; gap: 12px; }
+  .payout-balance-footer .button { width: 100%; }
+  .payout-account-panel > header > b { display: none; }
+  .payout-provider-tabs { padding-inline: 12px; }
+  .payout-provider-tabs > button { grid-template-columns: 23px minmax(0, 1fr); padding-inline: 9px; }
+  .payout-provider-tabs i { display: none; }
+  .payout-account-content { padding: 24px 18px 25px; }
+  .payout-account-intro { align-items: stretch; flex-direction: column; gap: 16px; }
+  .payout-current-destination { min-width: 0; }
+  .payout-bank-fields, .payout-paypal-fields { grid-template-columns: 1fr; }
+  .payout-bank-fields .payout-inline-action { grid-column: auto; width: 100%; }
+  .payout-paypal-fields .payout-inline-action { width: 100%; }
+  .payout-verification-strip { grid-template-columns: 32px minmax(0, 1fr); }
+  .payout-verification-strip > .button, .payout-verification-strip > .payout-otp-fields { grid-column: 1 / -1; width: 100%; }
+  .payout-otp-fields { grid-template-columns: 1fr; }
+  .payout-otp-fields .button { width: 100%; }
+}
