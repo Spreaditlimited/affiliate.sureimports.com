@@ -184,7 +184,7 @@
   .ah-proof-metrics strong { font-size: 17px; }
   .ah-section, .ah-partner { padding-block: 72px; }
   .ah-heading h2, .ah-process-intro h2, .ah-partner-copy h2, .ah-faq h2, .ah-final h2 { font-size: 39px; }
-  .ah-partner-copy h2 span { white-space: normal; }
+  .ah-partner-copy h2 span { display: inline; white-space: normal; }
   .ah-heading-split, .ah-services-heading { margin-bottom: 43px; }
   .ah-entry { min-height: 0; padding: 25px 20px; }
   .ah-entry > header { align-items: flex-start; flex-direction: column; }
@@ -207,4 +207,5 @@
   .ah-payout-grid article > span { width: 50px; height: 50px; }
   .ah-payout-grid article > b { display: none; }
   .ah-final-layout { gap: 35px; }
+  .affiliate-home .footer-bottom { flex-direction: column-reverse; gap: 10px; }
 }

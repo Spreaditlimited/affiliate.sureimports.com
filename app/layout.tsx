@@ -1,9 +1,12 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
+import { GoogleAnalytics } from '@next/third-parties/google';
 import { ThemeProvider } from '@/app/components/ThemeProvider';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'], display: 'swap' });
+const gaMeasurementId =
+  process.env.NEXT_PUBLIC_GA_TRACKING_ID || 'G-CMGHVCHW1D';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://affiliate.sureimports.com'),
@@ -63,6 +66,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
       <body className={inter.className}>
         <ThemeProvider>{children}</ThemeProvider>
+        <GoogleAnalytics gaId={gaMeasurementId} />
       </body>
     </html>
   );
