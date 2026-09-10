@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { SearchableSelect } from '@/app/components/SearchableSelect';
-import './payouts.css';
 
 type Account = {
   currency: string;

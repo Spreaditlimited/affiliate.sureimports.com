@@ -14,7 +14,7 @@
   border-radius: 5px;
   background: color-mix(in srgb, var(--success) 11%, transparent);
   color: var(--success);
-  font-size: 8px;
+  font-size: 11px;
   text-transform: uppercase;
 }
 
@@ -35,7 +35,7 @@
   display: grid;
   gap: 7px;
   color: hsl(var(--foreground));
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 750;
   letter-spacing: .045em;
   text-transform: uppercase;
@@ -58,7 +58,7 @@
   background: hsl(var(--background));
   color: hsl(var(--foreground));
   font: inherit;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 550;
   letter-spacing: 0;
   text-transform: none;
@@ -78,7 +78,7 @@
 
 .settings-form label > small {
   color: hsl(var(--muted-foreground));
-  font-size: 8px;
+  font-size: 11px;
   font-weight: 500;
   letter-spacing: 0;
   line-height: 1.55;
@@ -197,7 +197,7 @@
 
 .settings-form-footer > span {
   color: hsl(var(--muted-foreground));
-  font-size: 8px;
+  font-size: 11px;
   line-height: 1.55;
 }
 
@@ -210,7 +210,7 @@
   flex: 0 0 auto;
   height: 39px;
   padding-inline: 15px;
-  font-size: 9px;
+  font-size: 12px;
 }
 
 .settings-feedback {
@@ -220,7 +220,7 @@
   border-radius: 8px;
   background: color-mix(in srgb, var(--success) 8%, transparent);
   color: var(--success);
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 650;
   line-height: 1.55;
   text-transform: none;
@@ -239,7 +239,7 @@
 .account-session-panel > header .button {
   height: 36px;
   padding-inline: 13px;
-  font-size: 9px;
+  font-size: 12px;
 }
 
 .settings-session-list {
@@ -292,14 +292,14 @@
 }
 
 .settings-session-list strong {
-  font-size: 10px;
+  font-size: 13px;
 }
 
 .settings-session-list span,
 .settings-session-list small {
   overflow: hidden;
   color: hsl(var(--muted-foreground));
-  font-size: 8px;
+  font-size: 11px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -309,7 +309,7 @@
   border-radius: 5px;
   background: color-mix(in srgb, var(--success) 11%, transparent);
   color: var(--success);
-  font-size: 8px;
+  font-size: 10px;
   text-transform: uppercase;
 }
 
@@ -320,7 +320,7 @@
   background: transparent;
   color: hsl(var(--muted-foreground));
   font: inherit;
-  font-size: 8px;
+  font-size: 11px;
   font-weight: 700;
   cursor: pointer;
 }

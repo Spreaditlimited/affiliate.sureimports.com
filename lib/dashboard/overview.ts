@@ -16,7 +16,7 @@ export async function getDashboardOverview(affiliateId: number) {
     prisma.affiliate_conversions.groupBy({ by: ['commissionCurrency'], where: { affiliateId, status: 'PENDING' }, _sum: { commissionAmount: true } }),
     prisma.affiliate_payouts.groupBy({ by: ['currency'], where: { affiliateId, status: 'PAID' }, _sum: { amount: true } }),
     prisma.affiliate_conversions.findMany({ where: { affiliateId }, include: { service: { select: { displayName: true } } }, orderBy: { createdAt: 'desc' }, take: 6 }),
-    prisma.affiliate_program_services.findMany({ where: { active: true }, include: { currencyRates: { where: { active: true }, orderBy: { currency: 'asc' } } }, orderBy: [{ sortOrder: 'asc' }, { displayName: 'asc' }] }),
+    prisma.affiliate_program_services.findMany({ where: { active: true }, include: { currencyRates: { where: { active: true }, orderBy: { currency: 'asc' } }, unitRates: { where: { active: true }, orderBy: [{ currency: 'asc' }, { billingUnit: 'asc' }] } }, orderBy: [{ sortOrder: 'asc' }, { displayName: 'asc' }] }),
     prisma.affiliate_payout_accounts.count({ where: { affiliateId, status: 'VERIFIED' } }),
   ]);
 
@@ -35,7 +35,7 @@ export async function getDashboardOverview(affiliateId: number) {
       USD: { available: amountFor(available, 'USD'), pending: amountFor(pending, 'USD'), paid: amountFor(paid, 'USD') },
     },
     recent: recent.map((item) => ({ id: item.pidConversion, service: item.service.displayName, reference: item.externalOrderReference, currency: item.commissionCurrency, commission: Number(item.commissionAmount), status: item.status, date: item.createdAt })),
-    services: services.map((service) => ({ key: service.serviceKey, name: service.displayName, type: service.commissionType, percentageRate: service.percentageRate ? Number(service.percentageRate) : null, basis: service.eligibleAmountBasis, recurring: service.recurring, rates: service.currencyRates.map((rate) => ({ currency: rate.currency, fixedAmount: rate.fixedAmount ? Number(rate.fixedAmount) : null })) })),
+    services: services.map((service) => ({ key: service.serviceKey, name: service.displayName, type: service.commissionType, percentageRate: service.percentageRate ? Number(service.percentageRate) : null, basis: service.eligibleAmountBasis, recurring: service.recurring, rates: service.currencyRates.map((rate) => ({ currency: rate.currency, fixedAmount: rate.fixedAmount ? Number(rate.fixedAmount) : null })), unitRates: service.unitRates.map((rate) => ({ currency: rate.currency, billingUnit: rate.billingUnit, unitRate: Number(rate.unitRate), destinationCountry: rate.destinationCountry, shippingMode: rate.shippingMode })) })),
   };
 }
 

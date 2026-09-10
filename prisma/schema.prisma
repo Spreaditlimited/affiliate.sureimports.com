@@ -50,6 +50,7 @@ model affiliate_accounts {
   payoutAccounts      affiliate_payout_accounts[]
   payouts             affiliate_payouts[]
   payoutOtps          affiliate_payout_account_otps[]
+  apiCredentials      affiliate_api_credentials[]
 
   @@index([status, createdAt])
 }
@@ -117,9 +118,27 @@ model affiliate_program_services {
   createdAt           DateTime                             @default(now())
   updatedAt           DateTime                             @updatedAt
   currencyRates       affiliate_service_commission_rates[]
+  unitRates           affiliate_service_unit_rates[]
   conversions         affiliate_conversions[]
 
   @@index([active, sortOrder])
+}
+
+model affiliate_service_unit_rates {
+  id                 Int                        @id @default(autoincrement())
+  serviceId          Int
+  currency           String                     @db.Char(3)
+  billingUnit        String                     @db.VarChar(16)
+  destinationCountry String                     @default("*") @db.VarChar(100)
+  shippingMode       String                     @default("*") @db.VarChar(24)
+  unitRate           Decimal                    @db.Decimal(18, 4)
+  active             Boolean                    @default(true)
+  createdAt          DateTime                   @default(now())
+  updatedAt          DateTime                   @updatedAt
+  service            affiliate_program_services @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@unique([serviceId, currency, billingUnit, destinationCountry, shippingMode], map: "affiliate_unit_rate_scope_key")
+  @@index([serviceId, currency, billingUnit, active], map: "affiliate_unit_rate_lookup_idx")
 }
 
 model affiliate_service_commission_rates {
@@ -169,6 +188,9 @@ model affiliate_conversions {
   eligibleAmount           Decimal                    @db.Decimal(18, 2)
   commissionCurrency       String                     @db.Char(3)
   commissionAmount         Decimal                    @db.Decimal(18, 2)
+  commissionBasisUnit      String?                    @db.VarChar(16)
+  commissionBasisQuantity  Decimal?                   @db.Decimal(18, 4)
+  commissionRate           Decimal?                   @db.Decimal(18, 4)
   status                   String                     @default("PENDING") @db.VarChar(24)
   releaseMode              String                     @default("MANUAL") @db.VarChar(24)
   releaseAt                DateTime?
@@ -189,6 +211,43 @@ model affiliate_conversions {
   @@index([affiliateId, status, createdAt])
   @@index([serviceId, createdAt])
   @@index([status, releaseAt])
+}
+
+model affiliate_api_credentials {
+  id               Int                         @id @default(autoincrement())
+  pidCredential    String                      @unique @db.VarChar(80)
+  affiliateId      Int
+  name             String                      @db.VarChar(120)
+  keyPrefix        String                      @db.VarChar(24)
+  keyHash          String                      @unique @db.Char(64)
+  scopes           String                      @default("shipping:write") @db.VarChar(255)
+  active           Boolean                     @default(true)
+  expiresAt        DateTime?
+  lastUsedAt       DateTime?
+  createdByPidUser String?                     @db.VarChar(80)
+  revokedAt        DateTime?
+  createdAt        DateTime                    @default(now())
+  updatedAt        DateTime                    @updatedAt
+  affiliate        affiliate_accounts          @relation(fields: [affiliateId], references: [id], onDelete: Cascade)
+  idempotency      affiliate_api_idempotency[]
+
+  @@index([affiliateId, active])
+  @@index([keyPrefix, active])
+}
+
+model affiliate_api_idempotency {
+  id             Int                       @id @default(autoincrement())
+  credentialId   Int
+  idempotencyKey String                    @db.VarChar(120)
+  requestHash    String                    @db.Char(64)
+  responseStatus Int
+  responseBody   String                    @db.LongText
+  createdAt      DateTime                  @default(now())
+  expiresAt      DateTime
+  credential     affiliate_api_credentials @relation(fields: [credentialId], references: [id], onDelete: Cascade)
+
+  @@unique([credentialId, idempotencyKey], map: "affiliate_api_idempotency_credential_key")
+  @@index([expiresAt])
 }
 
 model affiliate_payout_accounts {

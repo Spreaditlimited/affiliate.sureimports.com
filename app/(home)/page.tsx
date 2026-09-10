@@ -1,171 +1,63 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { SiteHeader } from './components/SiteHeader';
+import './landing.css';
 
-const commissionOptions = [
-  { number: '01', title: 'Buy from Chinese websites', reward: '2%', unit: 'of product cost', description: 'Earn on the cost of eligible products purchased through your referral—not the total order value.' },
-  { number: '02', title: 'Supplier reports', reward: '₦5,000', unit: 'per purchase', description: 'Receive a fixed naira commission when your referral purchases an eligible supplier report.' },
-  { number: '03', title: 'Phones & laptops', reward: '₦20,000', unit: 'per purchase', description: 'Earn a fixed reward on every completed, eligible device purchase you refer.' },
-  { number: '04', title: 'Supplier Intelligence', reward: '10%', unit: 'on every renewal', description: 'Build recurring earnings for as long as an eligible referral keeps their subscription active.' },
-  { number: '05', title: 'Supplier verification', reward: '₦10,000', unit: 'per verification', description: 'Earn on the main verification service fee. Factory-visit transportation costs are excluded.' },
+const services = [
+  ['01', 'Buy from Chinese websites', '2%', 'of eligible product cost', 'Earn on the product cost—not shipping, handling, or the total order value.'],
+  ['02', 'Supplier reports', '₦5,000', 'per eligible purchase', 'A fixed naira commission when your referral purchases a supplier report.'],
+  ['03', 'Phones and laptops', '₦20,000', 'per eligible purchase', 'A fixed reward when a referred device purchase is completed.'],
+  ['04', 'Supplier Intelligence', '10%', 'subscription and renewals', 'Recurring earnings while an eligible referred subscription remains active.'],
+  ['05', 'Supplier verification', '₦10,000', 'per eligible verification', 'Earn on the main service fee. Factory-visit transport is excluded.'],
+  ['06', 'Ship with Us', 'Per KG / CBM', 'eligible air and sea freight', 'Commission uses the final verified quantity on the paid shipping invoice.'],
 ];
 
-const steps = [
-  ['Create your account', 'Apply once, complete your profile, and get a unique referral link built for you.'],
-  ['Recommend Sure Imports', 'Share services you genuinely trust with your audience, customers, or business network.'],
-  ['Track and get paid', 'Follow every eligible conversion and request payouts in the same currency your referral paid.'],
+const process = [
+  ['Attribution is recorded', 'A customer enters through your link or your business sends a request with its API key.'],
+  ['The eligible value is locked', 'The active service rule, currency, and final qualifying amount are recorded.'],
+  ['Payment confirms the earning', 'When Sure Imports confirms the customer payment, your commission enters review.'],
+  ['You receive your payout', 'Approved naira earnings go to your bank. Approved USD earnings go to PayPal.'],
 ];
 
-function ArrowIcon() {
-  return <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5" /></svg>;
-}
-
-function CheckIcon() {
-  return <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m4 10 4 4 8-9" /></svg>;
-}
+function CheckIcon() { return <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m4 10 4 4 8-9" /></svg>; }
+function LinkIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.1.1l2-2a5 5 0 0 0-7.1-7.1l-1.1 1.1M14 11a5 5 0 0 0-7.1-.1l-2 2A5 5 0 0 0 12 20l1.1-1.1" /></svg>; }
+function CodeIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 9-3 3 3 3M16 9l3 3-3 3M14 5l-4 14" /></svg>; }
+function JoinIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="7" r="3.5" /><path d="M2.5 20c.4-4.1 2.3-6.2 5.5-6.2s5.1 2.1 5.5 6.2M18.5 7.5v7M15 11h7" /></svg>; }
+function OwnershipIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 14.5 14.5 9M7.2 16.8l-1.4 1.4a3.5 3.5 0 0 1-5-5l3.4-3.4a3.5 3.5 0 0 1 5 0M16.8 7.2l1.4-1.4a3.5 3.5 0 0 1 5 5l-3.4 3.4a3.5 3.5 0 0 1-5 0" /></svg>; }
+function WalletIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5h15.5A2.5 2.5 0 0 1 21 9v9.5A2.5 2.5 0 0 1 18.5 21h-13A2.5 2.5 0 0 1 3 18.5v-14A1.5 1.5 0 0 1 4.5 3H17v3.5M16 12h5v5h-5a2.5 2.5 0 0 1 0-5Z" /><circle cx="16.5" cy="14.5" r=".5" /></svg>; }
 
 export default function AffiliateLandingPage() {
-  return (
-    <main>
-      <SiteHeader />
+  return <main className="affiliate-home">
+    <SiteHeader />
 
-      <section className="hero-section">
-        <div className="hero-orbit hero-orbit-one" aria-hidden="true" />
-        <div className="hero-orbit hero-orbit-two" aria-hidden="true" />
-        <div className="site-container hero-grid">
-          <div className="hero-copy">
-            <div className="eyebrow"><span /> The Sure Imports Affiliate Program</div>
-            <h1>Recommend what works. <span>Earn when they buy.</span></h1>
-            <p className="hero-lead">Turn trusted recommendations into transparent earnings. Refer people to eligible Sure Imports services and earn every time they complete a qualifying purchase.</p>
-            <div className="hero-actions">
-              <Link className="button button-primary" href="/sign-up">Start earning</Link>
-              <a className="button button-secondary" href="#how-it-works">See how it works</a>
-            </div>
-            <div className="hero-proof" role="list" aria-label="Program highlights">
-              <span role="listitem"><CheckIcon /> Free to join</span>
-              <span role="listitem"><CheckIcon /> Clear attribution</span>
-              <span role="listitem"><CheckIcon /> NGN & USD payouts</span>
-            </div>
-          </div>
+    <section className="ah-hero"><div className="ah-grid-lines" aria-hidden="true" /><div className="site-container ah-hero-layout">
+      <div className="ah-hero-copy"><p className="ah-kicker"><i /> Sure Imports Affiliate</p><h1>Recommend what works. <span>Earn when they buy.</span></h1><p>Recommend trusted sourcing and shipping services or connect your own business. Earn from every eligible customer payment you help create.</p><div className="ah-actions"><Link className="button button-primary" href="/sign-up">Create affiliate account</Link><a className="button button-secondary" href="#ways-to-earn">Explore earning options</a></div><div className="ah-hero-assurance" role="list"><div role="listitem"><i><JoinIcon /></i><span>Free to join</span></div><div role="listitem"><i><OwnershipIcon /></i><span>Permanent ownership</span></div><div role="listitem"><i><WalletIcon /></i><span>NGN and USD payouts</span></div></div></div>
+      <div className="ah-ledger-stage">
+        <div className="ah-ledger" aria-label="Affiliate earnings preview"><header><div><span>Affiliate workspace</span><strong>Commission ledger</strong></div><b><i /> Live tracking</b></header><div className="ah-ledger-balance"><span>Available earnings</span><strong>₦165,000</strong><small>Ready for bank payout</small></div><div className="ah-ledger-summary"><div><span>Owned referrals</span><b>48</b></div><div><span>Conversion rate</span><b>3.7%</b></div><div><span>USD balance</span><b>$72.00</b></div></div><div className="ah-ledger-activity"><p>Recent activity</p><article><i>SI</i><div><strong>Supplier Intelligence</strong><span>Renewal confirmed</span></div><b>+$24.00</b></article><article><i>PL</i><div><strong>Phones and laptops</strong><span>Purchase approved</span></div><b>+₦20,000</b></article><article><i>SW</i><div><strong>Ship with Us</strong><span>Invoice paid</span></div><b>Commission locked</b></article></div></div>
+        <div className="ah-floating-payment ah-floating-payment-paystack"><span>NGN</span><div><small>Payout processed</small><b>Paystack</b></div><CheckIcon /></div>
+        <div className="ah-floating-payment ah-floating-payment-paypal"><span>USD</span><div><small>Recurring commission</small><b>PayPal</b></div><strong>+$24</strong></div>
+      </div>
+    </div></section>
 
-          <section className="earnings-preview" aria-label="Affiliate dashboard preview">
-            <div className="preview-glow" aria-hidden="true" />
-            <div className="preview-window">
-              <div className="preview-topbar">
-                <div><span className="preview-label">Available earnings</span><strong>₦165,000</strong></div>
-                <span className="preview-badge">Dashboard preview</span>
-              </div>
-              <div className="preview-chart" aria-hidden="true">
-                <div className="chart-copy"><span>Last 6 months</span><b>+18.4%</b></div>
-                <div className="bars"><i /><i /><i /><i /><i /><i /></div>
-              </div>
-              <div className="preview-stats">
-                <div><span>Clicks</span><strong>1,284</strong></div>
-                <div><span>Conversions</span><strong>48</strong></div>
-                <div><span>Conversion rate</span><strong>3.7%</strong></div>
-              </div>
-              <div className="preview-activity">
-                <div className="activity-heading"><span>Recent commissions</span><b>View all</b></div>
-                <div className="activity-row"><span className="activity-icon">SI</span><div><strong>Supplier Intelligence</strong><span>Subscription renewed</span></div><b>+$24.00</b></div>
-                <div className="activity-row"><span className="activity-icon">PL</span><div><strong>Phones & laptops</strong><span>Purchase confirmed</span></div><b>+₦20,000</b></div>
-              </div>
-            </div>
-            <div className="floating-payment floating-payment-one"><span>NGN</span><div><small>Payout processed</small><b>Paystack</b></div><CheckIcon /></div>
-            <div className="floating-payment floating-payment-two"><span>USD</span><div><small>Recurring commission</small><b>PayPal</b></div><b>+$24</b></div>
-          </section>
-        </div>
-      </section>
+    <section className="ah-proof"><div className="site-container"><p>Built on real trade, <br />not empty clicks</p><div className="ah-proof-metrics"><article><strong>40,000+</strong><span>Customers served</span></article><article><strong>7 years</strong><span>Operating</span></article><article><strong>China → Africa</strong><span>Shipping specialists</span></article><article><strong>Transparent</strong><span>Commission records</span></article></div></div></section>
 
-      <section className="confidence-strip">
-        <div className="site-container confidence-inner">
-          <p>Built on services people already trust</p>
-          <div><span>40,000+ customers</span><i /><span>7 years in business</span><i /><span>4.7/5 Google rating</span><i /><span>China-to-Africa expertise</span></div>
-        </div>
-      </section>
+    <section className="ah-section" id="how-it-works"><div className="site-container"><div className="ah-heading ah-heading-split"><div><p className="ah-kicker">Choose how you refer</p><h2>One programme.<br />Two ways to earn.</h2></div><p>Share a personal referral link or connect an existing business platform. Both paths create clear, permanent ownership records.</p></div><div className="ah-entry-grid">
+      <article className="ah-entry"><header><i><LinkIcon /></i><span>For creators, consultants and individuals</span></header><h3>Share your referral link</h3><p>Send your unique link to people who need Sure Imports. Their eligible activity stays connected to your affiliate account.</p><ol><li><span>01</span>Copy your link</li><li><span>02</span>Recommend the right service</li><li><span>03</span>Track the result</li></ol><Link href="/sign-up">Start with a referral link</Link></article>
+      <article className="ah-entry ah-entry-api"><header><i><CodeIcon /></i><span>For platforms, agencies and digital products</span></header><h3>Connect your business</h3><p>Let your website or app send Ship with Us requests directly. Your customer avoids repeating a form, and every request retains your ownership.</p><ol><li><span>01</span>Create a secure API key</li><li><span>02</span>Send the customer request</li><li><span>03</span>Earn after eligible payment</li></ol><a href="#partner-api">See the business connection</a></article>
+    </div></div></section>
 
-      <section className="section" id="how-it-works">
-        <div className="site-container">
-          <div className="section-heading heading-split">
-            <div><p className="section-kicker">Simple by design</p><h2>One link.<br />Real earnings.</h2></div>
-            <p>We handle tracking, qualification, and commission records. You focus on connecting the right people with services that solve real sourcing problems.</p>
-          </div>
-          <div className="steps-grid">
-            {steps.map(([title, description], index) => (
-              <article className="step-card" key={title}>
-                <div className="step-number">0{index + 1}</div><div className="step-line"><span /></div><h3>{title}</h3><p>{description}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
+    <section className="ah-section ah-services-section" id="ways-to-earn"><div className="site-container"><div className="ah-heading ah-services-heading"><div><p className="ah-kicker">Ways to earn</p><h2>Clear value for every qualified introduction.</h2></div><p>Every service follows a defined rule. You can see what qualifies, how the commission is calculated, and when it becomes available.</p></div><div className="ah-service-ledger">{services.map(([number, name, rate, basis, description]) => <article key={number}><span className="ah-service-number">{number}</span><div className="ah-service-name"><h3>{name}</h3><p>{description}</p></div><div className="ah-service-rate"><strong>{rate}</strong><span>{basis}</span></div></article>)}</div><p className="ah-rate-note">Rates shown are the current programme defaults. Eligibility follows the active configuration when the qualifying transaction is recorded.</p></div></section>
 
-      <section className="section commission-section" id="commissions">
-        <div className="site-container">
-          <div className="section-heading centered-heading">
-            <p className="section-kicker">Ways to earn</p><h2>More value shared.<br />More opportunity earned.</h2><p>Each eligible service has a clear commission rule, so you always know what a successful referral is worth.</p>
-          </div>
-          <div className="commission-grid">
-            {commissionOptions.map((item) => (
-              <article className="commission-card" key={item.number}>
-                <div className="commission-card-top"><span>{item.number}</span><ArrowIcon /></div><h3>{item.title}</h3><div className="commission-amount"><strong>{item.reward}</strong><span>{item.unit}</span></div><p>{item.description}</p>
-              </article>
-            ))}
-          </div>
-          <p className="eligibility-note">Commission eligibility is determined by the active program configuration at the time of the qualifying transaction.</p>
-        </div>
-      </section>
+    <section className="ah-section"><div className="site-container ah-process-layout"><div className="ah-process-intro"><p className="ah-kicker">Nothing disappears</p><h2>From introduction to payout, every step has a record.</h2><p>Your dashboard separates visits, expected commissions, approved earnings, available balances, and completed payouts.</p></div><div className="ah-process-list">{process.map(([title, description], index) => <article key={title}><span>0{index + 1}</span><div><h3>{title}</h3><p>{description}</p></div></article>)}</div></div></section>
 
-      <section className="section clarity-section">
-        <div className="site-container clarity-grid">
-          <div className="clarity-visual">
-            <div className="link-card"><p>Your referral link</p><div><span>affiliate.sureimports.com/r/chioma</span><b>Copy</b></div><small>Every click and eligible conversion is connected to you.</small></div>
-            <div className="journey-line" aria-hidden="true"><i /><span /><i /><span /><i /></div>
-            <div className="journey-labels"><span>Shared</span><span>Purchased</span><span>Earned</span></div>
-          </div>
-          <div className="clarity-copy">
-            <p className="section-kicker">Clarity at every step</p><h2>Never wonder what happened to a referral.</h2><p>Your dashboard will make the entire journey visible—from the first click to a confirmed purchase and an available commission.</p>
-            <ul>
-              <li><CheckIcon /><span><b>Purpose-built tracking</b> for every active affiliate link.</span></li>
-              <li><CheckIcon /><span><b>Clear commission status</b> from pending to available and paid.</span></li>
-              <li><CheckIcon /><span><b>Renewal visibility</b> for recurring Supplier Intelligence earnings.</span></li>
-            </ul>
-          </div>
-        </div>
-      </section>
+    <section className="ah-partner" id="partner-api"><div className="site-container ah-partner-layout"><div className="ah-partner-copy"><p className="ah-kicker">Business Partner API</p><h2><span>Your customer starts with you.</span><span>The opportunity stays yours.</span></h2><p>Your developer connects your website or app once. After that, your system can create owned Ship with Us requests directly on Sure Imports.</p><ul><li><CheckIcon /><span>A unique partner reference connects both systems.</span></li><li><CheckIcon /><span>Air and sea shipping requests are supported.</span></li><li><CheckIcon /><span>Invoice quantity, locked rate, earnings, review and payout remain visible.</span></li></ul><div className="ah-actions"><Link className="button button-primary" href="/sign-up">Get partner access</Link><Link className="button ah-dark-button" href="/sign-in">Open Developers</Link></div></div><div className="ah-api-console"><header><div><i /><i /><i /></div><span>POST /api/v1/shipping-requests</span><b>201</b></header><div className="ah-api-request"><span>Your application</span><code>externalReference: “ORDER-10482”</code><code>destinationCountry: “Nigeria”</code><code>shippingPlanId: “SEA_SHIPPING”</code></div><div className="ah-api-connection"><i /><span>Ownership recorded permanently</span><i /></div><div className="ah-api-response"><div><span>Sure Imports request</span><strong>SI-SHIP-8H2K</strong></div><b>Owned by your affiliate account</b></div></div></div></section>
 
-      <section className="section payout-section" id="payouts">
-        <div className="site-container payout-grid">
-          <div className="payout-copy"><p className="section-kicker section-kicker-light">Paid in the right currency</p><h2><span>Your referrals</span><span>go global. Your payouts</span><span>follow.</span></h2><p>Commission currency follows the original service payment. There is no hidden conversion between what the customer paid and what you earned.</p></div>
-          <div className="payout-cards">
-            <article><span className="currency-mark">₦</span><div><p>Payments made in naira</p><h3>Earn in NGN</h3><span>Paid securely through Paystack</span></div><b>Paystack</b></article>
-            <article><span className="currency-mark">$</span><div><p>Payments made in foreign currency</p><h3>Earn in USD</h3><span>Paid internationally through PayPal</span></div><b>PayPal</b></article>
-          </div>
-        </div>
-      </section>
+    <section className="ah-section ah-payout-section" id="payouts"><div className="site-container"><div className="ah-heading ah-heading-split"><div><p className="ah-kicker">Paid in the original currency</p><h2>No forced conversion.<br />No blurred balances.</h2></div><p>The customer’s payment currency determines the commission currency and payout destination.</p></div><div className="ah-payout-grid"><article><span>₦</span><div><small>Naira service payments</small><h3>Earn and withdraw in NGN</h3><p>Verified Nigerian bank account payouts through Paystack.</p></div><b>Paystack</b></article><article><span>$</span><div><small>Foreign-currency service payments</small><h3>Earn and withdraw in USD</h3><p>International payouts to your verified PayPal email.</p></div><b>PayPal</b></article></div></div></section>
 
-      <section className="section faq-section" id="questions">
-        <div className="site-container faq-grid">
-          <div className="faq-heading"><p className="section-kicker">Questions, answered</p><h2>The details that matter.</h2><p>Everything is designed to be clear before you share your first link.</p></div>
-          <div className="faq-list">
-            <details><summary>How do I become an affiliate?<span>+</span></summary><p>Create an account, verify your email address, and use the unique referral link available in your affiliate dashboard.</p></details>
-            <details><summary>Is the 2% based on the complete order total?<span>+</span></summary><p>No. For Buy from Chinese Websites, the commission is calculated on eligible product cost only—not shipping, handling, or other order charges.</p></details>
-            <details><summary>Can I earn more than once from a subscription?<span>+</span></summary><p>Yes. Eligible Supplier Intelligence referrals earn 10% when the subscription starts and each time it successfully renews.</p></details>
-            <details><summary>How will I receive my earnings?<span>+</span></summary><p>Naira commissions are paid through Paystack. Commissions from foreign-currency service payments are recorded in USD and paid through PayPal.</p></details>
-          </div>
-        </div>
-      </section>
+    <section className="ah-section ah-faq" id="questions"><div className="site-container ah-faq-layout"><div><p className="ah-kicker">Questions, answered</p><h2>Know the rules before you share.</h2><p>Clear expectations create better referrals and fewer surprises.</p></div><div className="ah-faq-list"><details><summary>Who can join the affiliate programme?<span>+</span></summary><p>Individuals, creators, consultants, agencies, marketplaces, and other eligible businesses can create an account and recommend Sure Imports.</p></details><details><summary>Does every click earn a commission?<span>+</span></summary><p>No. A commission is recorded only when an attributed customer completes an eligible payment under the active programme rules.</p></details><details><summary>Can my business create requests automatically?<span>+</span></summary><p>Yes. After joining, open Developers in your dashboard, create a secure API key, and give the downloadable Quickstart guide to your developer.</p></details><details><summary>Can I follow the customers or requests I introduced?<span>+</span></summary><p>Yes. Your dashboard shows privacy-safe progress without exposing addresses, documents, shipment contents, or payment evidence.</p></details><details><summary>How do payouts work?<span>+</span></summary><p>Naira commissions are paid to a verified Nigerian bank account through Paystack. USD commissions are paid to a verified PayPal email.</p></details></div></div></section>
 
-      <section className="final-cta">
-        <div className="site-container final-cta-inner"><div><p className="section-kicker">Ready when you are</p><h2>Share trust.<br />Build an income stream.</h2></div><div><p>Join the Sure Imports Affiliate Program and earn from recommendations that create real value.</p><Link className="button button-primary" href="/sign-up">Become an affiliate</Link></div></div>
-      </section>
+    <section className="ah-final"><div className="site-container ah-final-layout"><div><p className="ah-kicker">Build from trust</p><h2>Make every valuable introduction count.</h2></div><div><p>Create your affiliate account, choose how you want to refer, and follow every eligible earning from one workspace.</p><Link className="button button-primary" href="/sign-up">Create affiliate account</Link></div></div></section>
 
-      <footer className="site-footer">
-        <div className="site-container footer-top">
-          <Link className="footer-brand" href="/" aria-label="Sure Imports Affiliate home"><Image src="/images/logo-white.png" width={664} height={106} alt="Sure Imports" /><span>Affiliate</span></Link>
-          <div className="footer-links"><a href="#how-it-works">How it works</a><a href="#commissions">Commissions</a><a href="#payouts">Payouts</a><Link href="/affiliate-terms">Affiliate terms</Link><a href="https://www.sureimports.com">Sure Imports</a></div>
-        </div>
-        <div className="site-container footer-bottom"><span>© {new Date().getFullYear()} Sure Importers Limited</span><span>Recommend responsibly. Earn transparently.</span></div>
-      </footer>
-    </main>
-  );
+    <footer className="site-footer"><div className="site-container footer-top"><Link className="footer-brand" href="/" aria-label="Sure Imports Affiliate home"><Image src="/images/logo-white.png" width={664} height={106} alt="Sure Imports" /><span>Affiliate</span></Link><div className="footer-links"><a href="#how-it-works">How it works</a><a href="#ways-to-earn">Ways to earn</a><a href="#partner-api">Partner API</a><a href="#payouts">Payouts</a><Link href="/affiliate-terms">Affiliate terms</Link><a href="https://www.sureimports.com">Sure Imports</a></div></div><div className="site-container footer-bottom"><span>© {new Date().getFullYear()} Sure Importers Limited</span><span>Recommend responsibly. Earn transparently.</span></div></footer>
+  </main>;
 }

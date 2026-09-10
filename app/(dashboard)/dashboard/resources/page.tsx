@@ -2,7 +2,6 @@ import { currentAffiliate } from '@/lib/auth/session';
 import { prisma } from '@/lib/prisma';
 import { PageHeader } from '../components/PageHeader';
 import { ResourceToolkit } from './ResourceToolkit';
-import './resources.css';
 
 export const dynamic = 'force-dynamic';
 
@@ -15,7 +14,7 @@ export default async function ResourcesPage() {
   if (!affiliate) return null;
   const services = await prisma.affiliate_program_services.findMany({
     where: { active: true },
-    include: { currencyRates: { where: { active: true }, orderBy: { currency: 'asc' } } },
+    include: { currencyRates: { where: { active: true }, orderBy: { currency: 'asc' } }, unitRates: { where: { active: true }, orderBy: [{ currency: 'asc' }, { billingUnit: 'asc' }] } },
     orderBy: [{ sortOrder: 'asc' }, { displayName: 'asc' }],
   });
   return <><PageHeader eyebrow="Affiliate toolkit" title="Resources" description="Approved tools and guidance for sharing Sure Imports clearly and earning with confidence." /><ResourceToolkit code={affiliate.referralCode} services={services.map((service) => ({
@@ -23,7 +22,9 @@ export default async function ResourcesPage() {
     name: service.displayName,
     reward: service.commissionType === 'PERCENTAGE'
       ? `${Number(service.percentageRate)}%${service.recurring ? ' on purchases and renewals' : ''}`
-      : service.currencyRates.filter((rate) => rate.fixedAmount).map((rate) => money(Number(rate.fixedAmount), rate.currency)).join(' · ') || 'Configured by currency',
+      : service.commissionType === 'PER_UNIT'
+        ? service.unitRates.map((rate) => `${money(Number(rate.unitRate), rate.currency)} per ${rate.billingUnit}`).join(' · ')
+        : service.currencyRates.filter((rate) => rate.fixedAmount).map((rate) => money(Number(rate.fixedAmount), rate.currency)).join(' · ') || 'Configured by currency',
     basis: service.eligibleAmountBasis,
   }))} /></>;
 }

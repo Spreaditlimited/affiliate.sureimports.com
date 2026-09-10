@@ -1,7 +1,6 @@
 import { currentAffiliate, listAffiliateSessions } from '@/lib/auth/session';
 import { PageHeader } from '../components/PageHeader';
 import { AccountSettings } from './AccountSettings';
-import './settings.css';
 
 const sessionDate = new Intl.DateTimeFormat('en-GB', {
   day: 'numeric',

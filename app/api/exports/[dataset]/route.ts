@@ -1,10 +1,11 @@
 import { currentAffiliate } from '@/lib/auth/session';
+import { getShippingOpportunityExport } from '@/lib/dashboard/shipping-opportunities';
 import { prisma } from '@/lib/prisma';
 
 export const runtime = 'nodejs';
 
 const MAX_EXPORT_ROWS = 10_000;
-const datasets = new Set(['referrals', 'earnings', 'payouts']);
+const datasets = new Set(['referrals', 'earnings', 'payouts', 'shipping-opportunities']);
 
 function csvCell(value: unknown) {
   let text = value instanceof Date ? value.toISOString() : String(value ?? '');
@@ -45,7 +46,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ dat
       ['Conversion ID', 'Date', 'Service', 'Order reference', 'Payment currency', 'Gross payment', 'Eligible amount', 'Commission currency', 'Commission', 'Status'],
       ...records.map((item) => [item.pidConversion, item.createdAt, item.service.displayName, item.externalOrderReference, item.paymentCurrency, item.grossAmount, item.eligibleAmount, item.commissionCurrency, item.commissionAmount, item.status]),
     ];
-  } else {
+  } else if (dataset === 'payouts') {
     const records = await prisma.affiliate_payouts.findMany({
       where: { affiliateId: affiliate.id },
       select: { pidPayout: true, requestedAt: true, provider: true, currency: true, amount: true, status: true, processedAt: true, externalReference: true },
@@ -55,6 +56,12 @@ export async function GET(_request: Request, { params }: { params: Promise<{ dat
     rows = [
       ['Payout ID', 'Requested at', 'Provider', 'Currency', 'Amount', 'Status', 'Processed at', 'Provider reference'],
       ...records.map((item) => [item.pidPayout, item.requestedAt, item.provider, item.currency, item.amount, item.status, item.processedAt, item.externalReference]),
+    ];
+  } else {
+    const records = await getShippingOpportunityExport(affiliate.id, MAX_EXPORT_ROWS);
+    rows = [
+      ['Submitted', 'Partner reference', 'Sure Imports request', 'Masked customer', 'Masked email', 'Destination', 'Mode', 'Billing unit', 'Request status', 'Invoice reference', 'Invoice status', 'Eligible quantity', 'Commission currency', 'Locked unit rate', 'Expected or earned commission', 'Commission stage', 'Review status', 'Payout status'],
+      ...records.map((item) => [item.submittedAt, item.externalReference, item.requestReference, item.customerName, item.customerEmail, item.destination, item.shippingMode, item.billingUnit, item.requestStatus, item.invoiceReference, item.invoiceStatus, item.eligibleQuantity, item.commissionCurrency, item.unitRate, item.commissionAmount, item.commissionKind, item.reviewStatus, item.payoutStatus]),
     ];
   }
 

@@ -1,0 +1,144 @@
+/* One typography contract for every affiliate dashboard route. */
+.affiliate-dashboard {
+  --dashboard-type-label: 11px;
+  --dashboard-type-meta: 12px;
+  --dashboard-type-control: 13px;
+  --dashboard-type-body: 14px;
+  --dashboard-type-title: 24px;
+}
+
+/* Compact uppercase labels and table headings. */
+.dashboard-topbar > div:first-child span,
+.dashboard-stat-grid span,
+.dashboard-stat-grid small,
+.referral-link-card span,
+.balance-card-top span,
+.data-table-head,
+.payout-balance-heading small,
+.payout-balance-card > p,
+.payout-current-destination small,
+.payout-account-intro > div > span,
+.payout-account-panel > header > b,
+.payout-account-content label > span,
+.payout-otp-fields label > span,
+.developer-intro span,
+.developer-docs article > span,
+.developer-key-list code,
+.developer-key-list small,
+.developer-key-list span,
+.developer-key-list b,
+.resource-share-card span,
+.resource-share-card nav a,
+.resource-section-heading > div > span,
+.brand-download-card footer span,
+.brand-download-card footer a,
+.campaign-copy-grid header > span,
+.campaign-copy-grid small,
+.resource-rate-list span,
+.affiliate-playbook-grid article > span,
+.settings-form label > small,
+.settings-form-footer > span,
+.settings-session-list span,
+.settings-session-list small {
+  font-size: var(--dashboard-type-label);
+}
+
+/* Secondary copy, buttons, navigation helpers and code. */
+.dashboard-panel > header small,
+.dashboard-panel > header a,
+.notification-list small,
+.table-footer > div,
+.table-footer nav > a,
+.table-export,
+.table-page-list a,
+.payout-balance-footer > span,
+.payout-balance-footer .button,
+.payout-field-error,
+.payout-inline-action,
+.payout-verification-strip .button,
+.payout-otp-fields .button,
+.developer-intro a,
+.developer-panel > header span,
+.developer-key-create button,
+.developer-secret button,
+.developer-key-list button,
+.developer-notice,
+.developer-docs aside strong,
+.developer-docs aside a,
+.developer-docs pre,
+.developer-fields > *,
+.developer-errors > *,
+.resource-share-actions button,
+.campaign-copy-grid button,
+.affiliate-playbook-grid p,
+.resource-compliance-note p,
+.settings-form label,
+.settings-form-footer .button,
+.settings-feedback,
+.account-session-panel > header .button {
+  font-size: var(--dashboard-type-meta);
+}
+
+/* Inputs, values and supporting paragraphs. */
+.dashboard-page-heading div > span,
+.dashboard-page-heading > p,
+.dashboard-empty p,
+.activity-table strong,
+.activity-table small,
+.service-rate-list strong,
+.service-rate-list small,
+.data-table article,
+.data-table article > strong,
+.data-table article > div strong,
+.data-table article > div small,
+.payout-account-intro p,
+.payout-current-destination strong,
+.payout-account-content input,
+.payout-account-content select,
+.payout-verification-strip strong,
+.dashboard-note strong,
+.dashboard-note p,
+.resource-grid p,
+.resource-share-card p,
+.brand-download-card footer strong,
+.campaign-copy-grid p,
+.resource-rate-list b,
+.resource-compliance-note strong,
+.settings-form input:not([type='checkbox']),
+.settings-form .searchable-select-input,
+.settings-session-list strong,
+.settings-session-list article > button,
+.developer-key-create input,
+.developer-empty {
+  font-size: var(--dashboard-type-control);
+}
+
+/* Primary readable content. */
+.dashboard-panel > header span,
+.notification-list strong,
+.payout-balance-heading strong,
+.payout-provider-tabs strong,
+.developer-intro p,
+.developer-panel strong,
+.developer-docs p,
+.developer-docs li,
+.resource-rate-list strong {
+  font-size: var(--dashboard-type-body);
+}
+
+.developer-docs h2 {
+  font-size: var(--dashboard-type-title);
+}
+
+.developer-fields > *,
+.developer-errors > p,
+.developer-errors > code {
+  font-size: var(--dashboard-type-meta);
+}
+
+@media (max-width: 650px) {
+  .affiliate-dashboard {
+    --dashboard-type-body: 14px;
+    --dashboard-type-control: 13px;
+  }
+}

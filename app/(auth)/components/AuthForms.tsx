@@ -5,6 +5,7 @@ import { FormEvent, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useRecaptchaV3 } from '@/lib/security/useRecaptchaV3';
 import { CountrySelect } from '@/app/components/CountrySelect';
+import { PasswordInput } from '@/app/components/PasswordInput';
 
 type Notice = { tone: 'error' | 'success'; text: string } | null;
 
@@ -40,8 +41,8 @@ export function SignUpForm() {
     <div className="form-grid"><label>First name<input name="firstName" autoComplete="given-name" minLength={2} maxLength={60} required /></label><label>Last name<input name="lastName" autoComplete="family-name" minLength={2} maxLength={60} required /></label></div>
     <label>Email address<input name="email" type="email" autoComplete="email" required /></label>
     <div className="form-grid"><label>Phone number<input name="phone" type="tel" autoComplete="tel" placeholder="+234 800 000 0000" required /></label><label>Country<CountrySelect /></label></div>
-    <label>Password<input name="password" type="password" autoComplete="new-password" minLength={10} required /><small>10+ characters, including uppercase, lowercase, and a number.</small></label>
-    <label>Confirm password<input name="confirmPassword" type="password" autoComplete="new-password" minLength={10} required /></label>
+    <label>Password<PasswordInput name="password" autoComplete="new-password" minLength={10} required /><small>10+ characters, including uppercase, lowercase, and a number.</small></label>
+    <label>Confirm password<PasswordInput name="confirmPassword" autoComplete="new-password" minLength={10} required /></label>
     <label className="checkbox-field"><input name="acceptedTerms" type="checkbox" required /><span>I agree to the <Link href="/affiliate-terms" target="_blank">Affiliate Program Terms</Link> and <Link href="https://www.sureimports.com/privacy-policy">Privacy Policy</Link>.</span></label>
     <NoticeBox notice={notice} /><button className="button auth-submit" disabled={loading}>{loading ? 'Creating account…' : 'Create affiliate account'}</button>
     <p className="auth-switch">Already have an account? <Link href="/sign-in">Sign in</Link></p>
@@ -60,7 +61,7 @@ export function SignInForm() {
   }
   return <form className="auth-form" onSubmit={onSubmit}>
     <label>Email address<input name="email" type="email" autoComplete="email" required /></label>
-    <label><span className="label-row">Password <Link href="/forgot-password">Forgot password?</Link></span><input name="password" type="password" autoComplete="current-password" required /></label>
+    <label><span className="label-row">Password <Link href="/forgot-password">Forgot password?</Link></span><PasswordInput name="password" autoComplete="current-password" required /></label>
     <NoticeBox notice={notice} /><button className="button auth-submit" disabled={loading}>{loading ? 'Signing in…' : 'Sign in'}</button>
     <p className="auth-switch">New to the program? <Link href="/sign-up">Create an account</Link></p>
   </form>;
@@ -94,7 +95,7 @@ export function ResetPasswordForm({ token }: { token: string }) {
     const result = await submit('/api/auth/reset-password', { token, password: form.get('password'), recaptchaToken }); setNotice({ tone: result.ok ? 'success' : 'error', text: result.data.message }); setDone(result.ok); setLoading(false);
   }
   if (done) return <div className="auth-form"><NoticeBox notice={notice} /><Link className="button auth-submit" href="/sign-in">Sign in with new password</Link></div>;
-  return <form className="auth-form" onSubmit={onSubmit}><label>New password<input name="password" type="password" autoComplete="new-password" minLength={10} required /><small>10+ characters, including uppercase, lowercase, and a number.</small></label><label>Confirm new password<input name="confirmPassword" type="password" autoComplete="new-password" minLength={10} required /></label><NoticeBox notice={notice} /><button className="button auth-submit" disabled={loading}>{loading ? 'Updating…' : 'Update password'}</button></form>;
+  return <form className="auth-form" onSubmit={onSubmit}><label>New password<PasswordInput name="password" autoComplete="new-password" minLength={10} required /><small>10+ characters, including uppercase, lowercase, and a number.</small></label><label>Confirm new password<PasswordInput name="confirmPassword" autoComplete="new-password" minLength={10} required /></label><NoticeBox notice={notice} /><button className="button auth-submit" disabled={loading}>{loading ? 'Updating…' : 'Update password'}</button></form>;
 }
 
 export function SignOutButton() {

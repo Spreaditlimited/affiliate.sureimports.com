@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useState, type FormEvent } from 'react';
 import { CountrySelect } from '@/app/components/CountrySelect';
+import { PasswordInput } from '@/app/components/PasswordInput';
 
 type Notice = { tone: 'success' | 'error'; text: string } | null;
 type Session = { pidSession: string; current: boolean; createdLabel: string; lastSeenLabel: string; expiresLabel: string };
@@ -82,7 +83,7 @@ export function AccountSettings({ profile, sessions }: { profile: AffiliateProfi
         <div className="settings-form-grid"><label><span>First name</span><input name="firstName" defaultValue={profile.firstName} autoComplete="given-name" minLength={2} maxLength={60} required /></label><label><span>Last name</span><input name="lastName" defaultValue={profile.lastName} autoComplete="family-name" minLength={2} maxLength={60} required /></label></div>
         <label><span>Email address</span><input value={profile.email} disabled readOnly aria-describedby="email-help" /><small id="email-help">Contact support to change your verified email address.</small></label>
         <div className="settings-form-grid"><label><span>Phone number</span><input name="phone" type="tel" defaultValue={profile.phone} autoComplete="tel" minLength={7} maxLength={24} required /></label><label><span>Country</span><CountrySelect defaultValue={profile.country} /></label></div>
-        <label><span>Current password</span><input name="currentPassword" type="password" autoComplete="current-password" required /><small>Required to protect changes to your personal information.</small></label>
+        <label><span>Current password</span><PasswordInput name="currentPassword" autoComplete="current-password" required /><small>Required to protect changes to your personal information.</small></label>
         <Feedback notice={profileNotice} />
         <div className="settings-form-footer"><span>Referral code: <strong>{profile.referralCode}</strong></span><button className="button" disabled={profileBusy}>{profileBusy ? 'Saving…' : 'Save profile'}</button></div>
       </form>
@@ -91,9 +92,9 @@ export function AccountSettings({ profile, sessions }: { profile: AffiliateProfi
     <section className="dashboard-panel account-settings-panel">
       <header><div><span>Password</span><small>Secure your affiliate account</small></div></header>
       <form className="settings-form" onSubmit={updatePassword}>
-        <label><span>Current password</span><input name="currentPassword" type="password" autoComplete="current-password" required /></label>
-        <label><span>New password</span><input name="newPassword" type="password" autoComplete="new-password" minLength={10} required /><small>At least 10 characters with uppercase, lowercase, and a number.</small></label>
-        <label><span>Confirm new password</span><input name="confirmPassword" type="password" autoComplete="new-password" minLength={10} required /></label>
+        <label><span>Current password</span><PasswordInput name="currentPassword" autoComplete="current-password" required /></label>
+        <label><span>New password</span><PasswordInput name="newPassword" autoComplete="new-password" minLength={10} required /><small>At least 10 characters with uppercase, lowercase, and a number.</small></label>
+        <label><span>Confirm new password</span><PasswordInput name="confirmPassword" autoComplete="new-password" minLength={10} required /></label>
         <Feedback notice={passwordNotice} />
         <div className="settings-form-footer"><span>Changing your password signs out every other device.</span><button className="button" disabled={passwordBusy}>{passwordBusy ? 'Changing…' : 'Change password'}</button></div>
       </form>
