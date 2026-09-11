@@ -510,6 +510,9 @@ select.searchable-select-native { position: absolute !important; width: 1px !imp
 .referral-link-card span { color: #9d9da5; font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
 .referral-link-card strong { overflow: hidden; color: #e8e8e8; font-size: 14px; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
 .referral-link-card button { position: relative; z-index: 1; flex: 0 0 auto; height: 40px; padding: 0 16px; border: 1px solid #343434; border-radius: 8px; background: #1d1d1d; color: white; font: inherit; font-size: 11px; font-weight: 750; cursor: pointer; }
+.referral-link-card-multiple { display: block; }
+.referral-link-options { position: relative; z-index: 1; display: grid !important; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 18px 24px !important; }
+.referral-link-options > div { min-width: 0; display: grid; gap: 8px; }
 .balance-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px; margin-top: 15px; }
 .balance-card { min-height: 225px; padding: 25px; border: 1px solid hsl(var(--border)); border-radius: 13px; background: hsl(var(--card)); }
 .balance-card-top { display: flex; align-items: center; justify-content: space-between; }
@@ -741,6 +744,8 @@ select.searchable-select-native { position: absolute !important; width: 1px !imp
   .dashboard-page-heading h1 { font-size: 34px; }
   .referral-link-card { align-items: stretch; flex-direction: column; }
   .referral-link-card button { width: 100%; }
+  .referral-link-options { grid-template-columns: minmax(0, 1fr); gap: 10px !important; }
+  .referral-link-options button { margin-bottom: 12px; }
   .referral-view-tabs { width: 100%; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .referral-view-tabs a { padding-inline: 8px; text-align: center; }
   .balance-grid, .dashboard-stat-grid { grid-template-columns: 1fr; }

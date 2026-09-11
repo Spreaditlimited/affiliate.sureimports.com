@@ -10,6 +10,7 @@ const services = [
   ['04', 'Supplier Intelligence', '10%', 'subscription and renewals', 'Recurring earnings while an eligible referred subscription remains active.'],
   ['05', 'Supplier verification', '₦10,000', 'per eligible verification', 'Earn on the main service fee. Factory-visit transport is excluded.'],
   ['06', 'Ship with Us', 'Per KG / CBM', 'eligible air and sea freight', 'Commission uses the final verified quantity on the paid shipping invoice.'],
+  ['07', 'LineScout sourcing', '10% / 2%', 'commitment fee / project payment', 'Earn on eligible sourcing commitment fees and product or project payments. Shipping follows the Ship with Us KG and CBM rates.'],
 ];
 
 const process = [

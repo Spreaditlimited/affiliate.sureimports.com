@@ -14,13 +14,15 @@ export default async function ResourcesPage() {
   if (!affiliate) return null;
   const services = await prisma.affiliate_program_services.findMany({
     where: { active: true },
-    include: { currencyRates: { where: { active: true }, orderBy: { currency: 'asc' } }, unitRates: { where: { active: true }, orderBy: [{ currency: 'asc' }, { billingUnit: 'asc' }] } },
+    include: { currencyRates: { where: { active: true }, orderBy: { currency: 'asc' } }, unitRates: { where: { active: true }, orderBy: [{ currency: 'asc' }, { billingUnit: 'asc' }] }, eventRules: { where: { active: true }, orderBy: { sortOrder: 'asc' } } },
     orderBy: [{ sortOrder: 'asc' }, { displayName: 'asc' }],
   });
   return <><PageHeader eyebrow="Affiliate toolkit" title="Resources" description="Approved tools and guidance for sharing Sure Imports clearly and earning with confidence." /><ResourceToolkit code={affiliate.referralCode} services={services.map((service) => ({
     key: service.serviceKey,
     name: service.displayName,
-    reward: service.commissionType === 'PERCENTAGE'
+    reward: service.eventRules.length
+      ? service.eventRules.map((rule) => `${rule.displayName} ${Number(rule.percentageRate)}%`).join(' · ')
+      : service.commissionType === 'PERCENTAGE'
       ? `${Number(service.percentageRate)}%${service.recurring ? ' on purchases and renewals' : ''}`
       : service.commissionType === 'PER_UNIT'
         ? service.unitRates.map((rate) => `${money(Number(rate.unitRate), rate.currency)} per ${rate.billingUnit}`).join(' · ')

@@ -85,7 +85,7 @@ export function AccountSettings({ profile, sessions }: { profile: AffiliateProfi
         <div className="settings-form-grid"><label><span>Phone number</span><input name="phone" type="tel" defaultValue={profile.phone} autoComplete="tel" minLength={7} maxLength={24} required /></label><label><span>Country</span><CountrySelect defaultValue={profile.country} /></label></div>
         <label><span>Current password</span><PasswordInput name="currentPassword" autoComplete="current-password" required /><small>Required to protect changes to your personal information.</small></label>
         <Feedback notice={profileNotice} />
-        <div className="settings-form-footer"><span>Referral code: <strong>{profile.referralCode}</strong></span><button className="button" disabled={profileBusy}>{profileBusy ? 'Saving…' : 'Save profile'}</button></div>
+        <div className="settings-form-footer"><span>Referral code: <strong>{profile.referralCode.toLowerCase()}</strong></span><button className="button" disabled={profileBusy}>{profileBusy ? 'Saving…' : 'Save profile'}</button></div>
       </form>
     </section>
 

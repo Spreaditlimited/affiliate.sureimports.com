@@ -28,7 +28,7 @@ function CopyButton({ value, label = 'Copy' }: { value: string; label?: string }
 }
 
 export function ResourceToolkit({ code, services }: { code: string; services: Service[] }) {
-  const link = `https://www.sureimports.com/?ref=${code}`;
+  const link = `https://www.sureimports.com/?ref=${code.toLowerCase()}`;
   const shareText = `Discover Sure Imports through my referral link: ${link}`;
   const encodedLink = encodeURIComponent(link);
   const encodedText = encodeURIComponent(shareText);
