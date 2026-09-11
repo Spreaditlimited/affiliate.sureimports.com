@@ -2,6 +2,10 @@
 
 import { useState } from 'react';
 
+const apiReferenceUrl = process.env.NODE_ENV === 'development'
+  ? 'http://localhost:3001/developers/shipping-api'
+  : 'https://www.sureimports.com/developers/shipping-api';
+
 type Credential = { pidCredential: string; name: string; keyPrefix: string; scopes: string; active: boolean; lastUsedAt: string | null; createdAt: string };
 const endpoint = 'https://www.sureimports.com/api/v1/shipping-requests';
 const example = `curl --request POST ${endpoint} \\
@@ -49,7 +53,7 @@ export function DeveloperWorkspace({ initialCredentials }: { initialCredentials:
   }
 
   return <div className="developer-workspace">
-    <section className="developer-intro"><div><span>API v1</span><h2>Create owned shipping requests</h2><p>Submit shipping-only opportunities from your product. The API key identifies you as the permanent owner of each accepted request; customers never supply or select an affiliate ID.</p></div><div className="developer-intro-actions"><a href="#quickstart">Read quickstart</a><a href="/api/developer/quickstart" download>Download guide</a><a href="https://www.sureimports.com/developers/shipping-api" target="_blank" rel="noreferrer">API reference</a></div></section>
+    <section className="developer-intro"><div><span>API v1</span><h2>Create owned shipping requests</h2><p>Submit shipping-only opportunities from your product. The API key identifies you as the permanent owner of each accepted request; customers never supply or select an affiliate ID.</p></div><div className="developer-intro-actions"><a href="#quickstart">Read quickstart</a><a href="/api/developer/quickstart" download>Download guide</a><a href={apiReferenceUrl} target="_blank" rel="noreferrer">API reference</a></div></section>
     <section className="developer-panel"><header><div><strong>API keys</strong><span>Secrets are shown once. Store them in a server-side secret manager.</span></div></header><div className="developer-key-create"><input value={name} maxLength={120} onChange={(event) => setName(event.target.value)} aria-label="API key name" /><button onClick={createKey} disabled={busy}>{busy ? 'Creating…' : 'Create secret key'}</button></div>{secret ? <div className="developer-secret"><div><strong>Copy this key now</strong><span>It cannot be recovered after you leave this page.</span></div><code>{secret}</code><button onClick={() => navigator.clipboard.writeText(secret)}>Copy</button></div> : null}{notice ? <p className="developer-notice">{notice}</p> : null}<div className="developer-key-list">{credentials.length ? credentials.map((credential) => <article key={credential.pidCredential}><div><strong>{credential.name}</strong><code>{credential.keyPrefix}••••••••</code></div><span>{credential.scopes}</span><small>{credential.lastUsedAt ? `Last used ${new Date(credential.lastUsedAt).toLocaleDateString('en-GB')}` : 'Never used'}</small><b className={credential.active ? 'is-active' : ''}>{credential.active ? 'Active' : 'Revoked'}</b>{credential.active ? <button onClick={() => revoke(credential.pidCredential)}>Revoke</button> : null}</article>) : <p className="developer-empty">No API keys yet.</p>}</div></section>
     <section className="developer-docs" id="quickstart"><aside><strong>On this page</strong><a href="#authentication">Authentication</a><a href="#plans">Shipping plans</a><a href="#request">Create request</a><a href="#status">Request status</a><a href="#idempotency">Idempotency</a><a href="#ownership">Ownership</a><a href="#errors">Errors</a></aside><div>
       <article><span>01</span><h2>Quickstart</h2><p>Call the production endpoint from your backend. Never expose a secret key in browser JavaScript, mobile application bundles, public repositories or screenshots.</p><pre><code>{example}</code></pre></article>
