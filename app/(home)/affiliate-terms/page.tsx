@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
+import { SiteFooter } from '../components/SiteFooter';
 import Link from 'next/link';
 import { SiteHeader } from '../components/SiteHeader';
 import './affiliate-terms.css';
@@ -46,6 +46,6 @@ export default function AffiliateTermsPage() {
       <aside className="affiliate-legal-sidebar"><section className="affiliate-legal-card affiliate-document-details"><p>Document details</p><ul><li><LegalIcon name="calendar" /><span>Last updated: 10 September 2026</span></li><li><LegalIcon name="clock" /><span>Version: 1.0</span></li><li><LegalIcon name="shield" /><span>Legally binding</span></li></ul></section><section className="affiliate-legal-card affiliate-legal-support"><i><LegalIcon name="document" /></i><h2>Agreement questions?</h2><p>Contact our support team if you need clarification about referrals, commission eligibility, or payouts.</p><a className="affiliate-support-button" href="mailto:hello@sureimports.com"><LegalIcon name="mail" /> Email support</a><Link href="/">Affiliate programme <span>›</span></Link><a href="https://www.sureimports.com/privacy-policy">Read privacy policy <span>›</span></a></section></aside>
       <article className="affiliate-legal-card affiliate-legal-content"><p className="affiliate-legal-intro">By registering for, activating, or using an affiliate account, you agree to this Affiliate Program Agreement. Please read every section carefully before sharing a referral link.</p><div>{sections.map(([title, body]) => { const [number, ...titleParts] = title.split('. '); return <section key={title}><span>Section {number}</span><h2>{titleParts.join('. ')}</h2><p>{body}</p></section>; })}</div><footer><Link className="button button-primary" href="/sign-up">Create affiliate account</Link><a className="button button-secondary" href="https://www.sureimports.com/terms-and-conditions">Website terms</a></footer></article>
     </div></section>
-    <footer className="site-footer affiliate-legal-footer"><div className="site-container footer-top"><Link className="footer-brand" href="/" aria-label="Sure Imports Affiliate home"><Image src="/images/logo-white.png" width={664} height={106} alt="Sure Imports" /><span>Affiliate</span></Link><div className="footer-links"><Link href="/#how-it-works">How it works</Link><Link href="/#ways-to-earn">Ways to earn</Link><Link href="/#payouts">Payouts</Link><a href="/affiliate-terms">Affiliate terms</a><a href="https://www.sureimports.com">Sure Imports</a></div></div><div className="site-container footer-bottom"><span>© {new Date().getFullYear()} Sure Importers Limited</span><span>Recommend responsibly. Earn transparently.</span></div></footer>
+    <SiteFooter />
   </main>;
 }

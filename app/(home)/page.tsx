@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import { SiteFooter } from './components/SiteFooter';
 import Link from 'next/link';
 import { SiteHeader } from './components/SiteHeader';
 import './landing.css';
@@ -59,6 +59,6 @@ export default function AffiliateLandingPage() {
 
     <section className="ah-final"><div className="site-container ah-final-layout"><div><p className="ah-kicker">Build from trust</p><h2>Make every valuable introduction count.</h2></div><div><p>Create your affiliate account, choose how you want to refer, and follow every eligible earning from one workspace.</p><Link className="button button-primary" href="/sign-up">Create affiliate account</Link></div></div></section>
 
-    <footer className="site-footer"><div className="site-container footer-top"><Link className="footer-brand" href="/" aria-label="Sure Imports Affiliate home"><Image src="/images/logo-white.png" width={664} height={106} alt="Sure Imports" /><span>Affiliate</span></Link><div className="footer-links"><a href="#how-it-works">How it works</a><a href="#ways-to-earn">Ways to earn</a><a href="#partner-api">Partner API</a><a href="#payouts">Payouts</a><a href="/affiliate-terms">Affiliate terms</a><a href="https://www.sureimports.com">Sure Imports</a></div></div><div className="site-container footer-bottom"><span>© {new Date().getFullYear()} Sure Importers Limited</span><span>Recommend responsibly. Earn transparently.</span></div></footer>
+    <SiteFooter />
   </main>;
 }

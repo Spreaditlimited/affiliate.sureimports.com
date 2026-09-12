@@ -10,6 +10,7 @@ import { encryptPrivateValue, randomToken, secureFingerprint } from '@/lib/secur
 import { sendVerificationEmail } from '@/lib/email/auth-mail';
 import { verifyRecaptcha } from '@/lib/security/recaptcha';
 import { isCountry } from '@/lib/data/countries';
+import { CommercialMembershipConflict, reserveAffiliateMembership } from '@/lib/partners/membership';
 
 const schema = z.object({
   firstName: z.string().trim().min(2).max(60),
@@ -50,6 +51,7 @@ export async function POST(request: NextRequest) {
         termsAcceptedAt: new Date(),
         consentVersion: AUTH_CONSENT_VERSION,
       } });
+      await reserveAffiliateMembership(tx, affiliate.emailHash, affiliate.id);
       await tx.affiliate_auth_tokens.create({ data: {
         pidToken: `atok_${randomToken(18)}`, affiliateId: affiliate.id, purpose: 'VERIFY_EMAIL',
         tokenHash: secureFingerprint(verificationToken, 'affiliate-auth-token-v1'),
@@ -57,6 +59,7 @@ export async function POST(request: NextRequest) {
       } });
     });
   } catch (error) {
+    if (error instanceof CommercialMembershipConflict) return noStoreJson({ message: error.message }, 409);
     if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
       return noStoreJson({ message: 'An account with this email already exists. Try signing in instead.' }, 409);
     }

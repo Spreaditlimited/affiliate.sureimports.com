@@ -10,6 +10,6 @@ export function SiteHeader() {
       <span className="brand-divider" /><span className="brand-product">Affiliate</span>
     </Link>
     <nav className="desktop-nav" aria-label="Main navigation"><Link href="/#how-it-works">How it works</Link><Link href="/#ways-to-earn">Ways to earn</Link><Link href="/#partner-api">Partner API</Link><Link href="/#payouts">Payouts</Link><Link href="/#questions">FAQs</Link></nav>
-    <div className="nav-actions"><ThemeToggle /><Link className="button button-small" href="/sign-in">Sign in</Link></div>
+    <div className="nav-actions"><Link className="nav-sign-in" href="/sign-in">Sign in</Link><ThemeToggle /></div>
   </div></header>;
 }
