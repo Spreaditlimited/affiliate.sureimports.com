@@ -209,3 +209,40 @@
   .ah-final-layout { gap: 35px; }
   .affiliate-home .footer-bottom { flex-direction: column-reverse; gap: 10px; }
 }
+
+/* Refined marketing surfaces and type in both themes. */
+html:not(.dark) .affiliate-home { --background:0 0% 100%; }
+.affiliate-home .ah-hero { min-height:720px;isolation:isolate; }
+.affiliate-home .ah-hero::before { content:'';position:absolute;z-index:-1;inset:0 0 0 38%;background:radial-gradient(ellipse at 75% 42%,#eeecfc 0%,#f5f7fc 40%,transparent 72%);pointer-events:none; }
+html.dark .affiliate-home .ah-hero::before { background:radial-gradient(ellipse at 75% 42%,#242037 0%,#171923 40%,transparent 72%); }
+.affiliate-home .ah-grid-lines { opacity:.12; }
+.affiliate-home .ah-hero-layout { padding-block:96px; }
+.affiliate-home .ah-hero-copy h1 { font-size:clamp(52px,5.05vw,74px);font-weight:700;line-height:1.055;letter-spacing:-.055em; }
+.affiliate-home .ah-hero-copy h1 span { color:var(--indigo); }
+.affiliate-home .ah-hero-copy > p:not(.ah-kicker) { font-size:18px;line-height:1.75; }
+.affiliate-home .ah-kicker { font-size:12px;font-weight:650;letter-spacing:.105em; }
+.affiliate-home :is(.ah-heading h2,.ah-process-intro h2,.ah-partner-copy h2,.ah-faq h2,.ah-final h2) { font-weight:650;letter-spacing:-.035em;line-height:1.15;font-size:clamp(34px,3.6vw,52px); }
+.affiliate-home :is(.ah-entry,.ah-service-ledger,.ah-payout-grid article) { border-radius:12px;box-shadow:var(--shadow); }
+.affiliate-home .ah-entry h3 { font-weight:650;letter-spacing:-.03em; }
+.affiliate-home :is(.ah-entry>p,.ah-service-name p,.ah-process-list p,.ah-payout-grid p,.ah-faq-list details p) { font-size:15px;line-height:1.75; }
+.affiliate-home :is(.ah-entry li,.ah-entry>a) { font-size:14px; }
+.affiliate-home :is(.ah-service-rate span,.ah-proof-metrics span,.ah-rate-note,.ah-payout-grid small) { font-size:12px; }
+.affiliate-home .ah-hero-assurance > div { font-size:12px; }
+.affiliate-home .ah-ledger { border-radius:16px;box-shadow:0 28px 60px -20px rgb(45 49 99 / 22%),0 4px 12px rgb(24 36 59 / 5%); }
+html.dark .affiliate-home .ah-ledger { box-shadow:0 28px 60px -20px rgb(0 0 0 / 60%); }
+.affiliate-home .ah-floating-payment { box-shadow:var(--shadow); }
+.affiliate-home .ah-faq-list summary { font-size:16px;line-height:1.5; }
+.affiliate-home .ah-faq-list details[open] summary { color:var(--indigo); }
+.affiliate-home .ah-partner { background:#191922;color:#f2f3f7; }
+.affiliate-home .ah-partner-copy > p:not(.ah-kicker),.affiliate-home .ah-partner-copy li { color:#adb2c0; }
+.affiliate-home .ah-api-console { background:#191b21;border-color:#30333e; }
+.affiliate-home .ah-api-request { background:#101114;border-color:#30333e; }
+.affiliate-home .ah-api-response { background:#24232f;border-color:#393348; }
+.affiliate-home .ah-dark-button { background:#b0a7f5;color:#19152d;border-color:transparent; }
+.affiliate-home .ah-final { border-top:0; }
+@media(max-width:580px) {
+ .affiliate-home .ah-hero-copy h1 { font-size:clamp(40px,10.6vw,52px); }
+ .affiliate-home .ah-hero-copy>p:not(.ah-kicker) { font-size:17px; }
+ .affiliate-home .ah-hero-layout { padding-block:48px; }
+ .affiliate-home .ah-hero::before { inset:0;opacity:.5; }
+}

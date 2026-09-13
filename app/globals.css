@@ -806,3 +806,44 @@ select.searchable-select-native { position: absolute !important; width: 1px !imp
   .settings-session-list article { grid-template-columns: 32px minmax(0, 1fr); }
   .settings-session-list article > b, .settings-session-list article > button { grid-column: 2; justify-self: start; }
 }
+
+/* Shared Partner/Affiliate design direction, scoped to marketing and workspace. */
+html:not(.dark) :is(.affiliate-home,.affiliate-dashboard) { --background:220 50% 98%;--foreground:220 42% 16%;--card:0 0% 100%;--card-foreground:220 42% 16%;--primary:243 40% 44%;--primary-foreground:0 0% 100%;--secondary:225 40% 97%;--muted:225 40% 97%;--muted-foreground:219 19% 40%;--border:217 30% 92%;--ring:243 40% 44%;--indigo:#48439b;--indigo-soft:#efedf9;--shadow:0 2px 4px rgb(24 36 59 / 2%),0 10px 24px rgb(24 36 59 / 3%); }
+html.dark :is(.affiliate-home,.affiliate-dashboard) { --background:225 11% 7%;--foreground:228 24% 96%;--card:225 14% 11%;--card-foreground:228 24% 96%;--primary:247 80% 81%;--primary-foreground:250 36% 13%;--secondary:245 15% 16%;--muted:245 15% 16%;--muted-foreground:224 13% 72%;--border:227 13% 22%;--ring:247 80% 81%;--indigo:#b8b2ff;--indigo-soft:#292539;--shadow:0 1px 0 rgb(255 255 255 / 3%) inset,0 8px 24px rgb(0 0 0 / 12%); }
+.affiliate-dashboard { background:hsl(var(--background));color:hsl(var(--foreground)); }
+.affiliate-dashboard.affiliate-dashboard { --dashboard-type-label:12px;--dashboard-type-meta:13px;--dashboard-type-control:14px;--dashboard-type-body:15px;--dashboard-type-title:24px; }
+.affiliate-dashboard .dashboard-topbar { background:hsl(var(--card));backdrop-filter:none; }
+.affiliate-dashboard .dashboard-sidebar { background:hsl(var(--card)); }
+.affiliate-dashboard .dashboard-sidebar nav a { border-radius:8px;font-size:14px;min-height:46px; }
+.affiliate-dashboard .dashboard-sidebar nav a.active { box-shadow:inset 3px 0 var(--indigo);font-weight:650; }
+.affiliate-dashboard :is(.balance-card,.dashboard-stat-grid,.dashboard-panel,.payout-balance-card,.developer-panel,.developer-docs>div,.resource-share-card) { border-radius:12px;box-shadow:var(--shadow); }
+.affiliate-dashboard .dashboard-page-heading h1 { font-weight:650;letter-spacing:-.035em;line-height:1.15; }
+.affiliate-dashboard :is(.button,.developer-key-create button,.developer-key-list button,.developer-secret button) { min-height:44px;border-radius:8px;font-size:14px; }
+.affiliate-dashboard .button-primary,.affiliate-dashboard .developer-key-create button { background:hsl(var(--primary));color:hsl(var(--primary-foreground)); }
+.affiliate-dashboard :is(.referral-link-card,.developer-intro) { background:hsl(var(--card));border-color:hsl(var(--border));color:hsl(var(--foreground));box-shadow:var(--shadow); }
+.affiliate-dashboard .referral-link-card::after { display:none; }
+.affiliate-dashboard .referral-link-card span { color:var(--indigo); }
+.affiliate-dashboard .referral-link-card strong { color:hsl(var(--foreground));font-size:15px; }
+.affiliate-dashboard .referral-link-card button,.affiliate-dashboard .developer-intro a { background:hsl(var(--primary));color:hsl(var(--primary-foreground));border-color:transparent;min-height:44px;font-size:14px; }
+.affiliate-dashboard .developer-intro p { color:hsl(var(--muted-foreground)); }
+.affiliate-dashboard :is(.settings-form input:not([type=checkbox]),.payout-account-content input,.developer-key-create input) { font-size:16px; }
+.affiliate-dashboard .data-table-head { background:hsl(var(--background));font-weight:650; }
+.affiliate-dashboard .dashboard-top-actions { gap:12px; }
+.affiliate-home .button { border-radius:8px;font-size:15px; }
+.affiliate-home .site-header { background:hsl(var(--card));backdrop-filter:none; }
+.affiliate-home :is(.desktop-nav a,.nav-sign-in) { font-size:14px; }
+
+/* Authentication: the same palette, with the original split layout retained. */
+html:not(.dark) .auth-page { --background:220 50% 98%;--foreground:220 42% 16%;--card:0 0% 100%;--primary:243 40% 44%;--primary-foreground:0 0% 100%;--secondary:225 40% 97%;--muted:225 40% 97%;--muted-foreground:219 19% 40%;--border:217 30% 92%;--indigo:#48439b;--ring:243 40% 44%; }
+html.dark .auth-page { --background:225 11% 7%;--foreground:228 24% 96%;--card:225 14% 11%;--primary:247 80% 81%;--primary-foreground:250 36% 13%;--secondary:245 15% 16%;--muted:245 15% 16%;--muted-foreground:224 13% 72%;--border:227 13% 22%;--indigo:#b8b2ff;--ring:247 80% 81%; }
+.auth-page { background:hsl(var(--background));color:hsl(var(--foreground)); }
+.auth-page .auth-story { background:#15171f; }
+.auth-page .auth-story-copy h2 { font-weight:650;letter-spacing:-.045em; }
+.auth-page .auth-story-copy h2 span { color:#b8b2ff; }
+.auth-page .auth-heading h1 { font-weight:650;letter-spacing:-.035em;line-height:1.15; }
+.auth-page .auth-heading>p:last-child { font-size:15px;line-height:1.7; }
+.auth-page .auth-form label { font-size:14px;gap:9px; }
+.auth-page .auth-form input:not([type=checkbox]),.auth-page .auth-form select { font-size:16px;height:50px;border-radius:8px; }
+.auth-page .auth-submit { font-size:15px;border-radius:8px;box-shadow:0 2px 5px rgb(0 0 0 / 12%); }
+.auth-page .auth-switch { font-size:14px; }
+.auth-page .auth-legal { font-size:12px;line-height:1.7;margin-top:16px; }
