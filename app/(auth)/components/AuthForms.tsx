@@ -100,5 +100,5 @@ export function ResetPasswordForm({ token }: { token: string }) {
 
 export function SignOutButton() {
   const router = useRouter(); const [loading, setLoading] = useState(false);
-  return <button className="button button-secondary" disabled={loading} onClick={async () => { setLoading(true); await submit('/api/auth/sign-out', {}); router.replace('/sign-in'); }}>{loading ? 'Signing out…' : 'Sign out'}</button>;
+  return <button type="button" aria-label="Sign out" className="button button-secondary" disabled={loading} onClick={async () => { setLoading(true); await submit('/api/auth/sign-out', {}); router.replace('/sign-in'); }}><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><path d="M9 4H4v16h5M9 12h12m-5-5 5 5-5 5" /></svg><span>{loading ? 'Signing out…' : 'Sign out'}</span></button>;
 }

@@ -17,6 +17,7 @@ export default async function SettingsPage() {
   if (!affiliate) return null;
   const sessions = await listAffiliateSessions(affiliate.id, affiliate.sessionId);
   const profile = {
+    profileImageUrl: affiliate.profileImageUrl,
     firstName: affiliate.firstName,
     lastName: affiliate.lastName,
     email: affiliate.email,

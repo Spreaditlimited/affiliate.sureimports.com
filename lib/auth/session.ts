@@ -35,6 +35,7 @@ export const currentAffiliate = cache(async function currentAffiliate() {
     await prisma.affiliate_sessions.update({ where: { id: session.id }, data: { lastSeenAt: new Date() } });
   }
   return {
+    profileImageUrl: session.affiliate.profileImageUrl,
     id: session.affiliate.id,
     sessionId: session.pidSession,
     firstName: decryptPrivateValue(session.affiliate.firstNameCiphertext),

@@ -2,12 +2,16 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { ThemeToggle } from '@/app/(home)/components/ThemeToggle';
 import { SignOutButton } from '@/app/(auth)/components/AuthForms';
 
-type Affiliate = { firstName: string; lastName: string; email: string; referralCode: string };
+import WorkspaceSearch from '@/components/dashboard/WorkspaceSearch';
+import AccountTray from '@/components/dashboard/AccountTray';
+import { useNavigationTray } from '@/components/dashboard/useNavigationTray';
+
+type Affiliate = { profileImageUrl?: string | null; firstName: string; lastName: string; email: string; referralCode: string };
 type Notification = { id: string; title: string; message: string; href: string; tone: 'info' | 'success' | 'warning'; date: string };
 type IconName = 'home' | 'referrals' | 'earnings' | 'payouts' | 'resources' | 'developers' | 'settings' | 'menu' | 'close' | 'bell';
 const navigation: Array<{ label: string; href: string; icon: IconName }> = [
@@ -23,33 +27,42 @@ function Icon({ name }: { name: IconName }) {
 }
 
 export function DashboardFrame({ affiliate, notifications, children }: { affiliate: Affiliate; notifications: Notification[]; children: React.ReactNode }) {
-  const pathname = usePathname(); const [menuOpen, setMenuOpen] = useState(false); const [collapsed, setCollapsed] = useState(false); const [notificationsOpen, setNotificationsOpen] = useState(false); const [hasUnread, setHasUnread] = useState(false); const notificationRef = useRef<HTMLDivElement>(null);
-  const notificationKey = notifications.map((item) => item.id).join('|');
-  useEffect(() => {
-    setCollapsed(window.localStorage.getItem('affiliate-sidebar-collapsed') === 'true');
-    setHasUnread(Boolean(notificationKey) && window.localStorage.getItem('affiliate-notifications-seen') !== notificationKey);
-  }, [notificationKey]);
-  useEffect(() => {
-    if (!notificationsOpen) return;
-    const close = (event: PointerEvent) => { if (!notificationRef.current?.contains(event.target as Node)) setNotificationsOpen(false); };
-    const escape = (event: KeyboardEvent) => { if (event.key === 'Escape') setNotificationsOpen(false); };
-    document.addEventListener('pointerdown', close);
-    document.addEventListener('keydown', escape);
-    return () => { document.removeEventListener('pointerdown', close); document.removeEventListener('keydown', escape); };
-  }, [notificationsOpen]);
+  const pathname = usePathname();
+  const router = useRouter();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
+  useNavigationTray(menuOpen, setMenuOpen, 'affiliate-navigation');
+  useEffect(() => { setCollapsed(window.localStorage.getItem('affiliate-sidebar-collapsed') === 'true'); }, []);
   const initials = `${affiliate.firstName[0] ?? ''}${affiliate.lastName[0] ?? ''}`.toUpperCase();
-  const title = navigation.find((item) => item.href === pathname)?.label ?? 'Dashboard';
   function toggleSidebar() {
     setCollapsed((current) => { const next = !current; window.localStorage.setItem('affiliate-sidebar-collapsed', String(next)); return next; });
   }
   return <div className={`affiliate-dashboard ${collapsed ? 'sidebar-collapsed' : ''}`}>
-    <button className={`dashboard-mobile-menu ${menuOpen ? 'is-open' : ''}`} onClick={() => setMenuOpen(!menuOpen)} aria-label={menuOpen ? 'Close navigation' : 'Open navigation'}><Icon name={menuOpen ? 'close' : 'menu'} /></button>
+    <button className={`dashboard-mobile-menu ${menuOpen ? 'is-open' : ''}`} onClick={() => setMenuOpen(!menuOpen)} aria-label="Open navigation" aria-expanded={menuOpen} aria-controls="affiliate-navigation"><Icon name="menu" /></button>
     {menuOpen && <button className="dashboard-scrim" aria-label="Close navigation" onClick={() => setMenuOpen(false)} />}
-    <aside className={`dashboard-sidebar ${menuOpen ? 'is-open' : ''}`} aria-label="Affiliate account navigation">
-      <div className="dashboard-brand-row"><Link href="/dashboard" className="dashboard-brand"><Image className="logo logo-dark" src="/images/logo.png" width={200} height={32} style={{ width: 'auto' }} alt="Sure Imports" priority /><Image className="logo logo-light" src="/images/logo-white.png" width={200} height={32} style={{ width: 'auto' }} alt="Sure Imports" priority /><span>Affiliate</span></Link><button className="dashboard-collapse-button" type="button" onClick={toggleSidebar} aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'} title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}><Icon name="menu" /></button></div>
+    <aside id="affiliate-navigation" role={menuOpen ? 'dialog' : undefined} aria-modal={menuOpen || undefined} className={`dashboard-sidebar ${menuOpen ? 'is-open' : ''}`} aria-label="Affiliate account navigation">
+      <div className="dashboard-brand-row"><Link href="/dashboard" className="dashboard-brand"><Image className="logo logo-dark" src="/images/logo.png" width={200} height={32} style={{ width: 'auto' }} alt="Sure Imports" priority /><Image className="logo logo-light" src="/images/logo-white.png" width={200} height={32} style={{ width: 'auto' }} alt="Sure Imports" priority /><span>Affiliate</span></Link><button type="button" className="dashboard-navigation-close" aria-label="Close navigation" onClick={() => setMenuOpen(false)}><Icon name="close" /></button><button className="dashboard-collapse-button" type="button" onClick={toggleSidebar} aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'} title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}><svg viewBox="0 0 24 24" aria-hidden="true" style={{transform:collapsed ? 'rotate(180deg)' : undefined}}><path d="m15 6-6 6 6 6" /></svg></button></div>
       <nav aria-label="Affiliate dashboard"><p>Workspace</p>{navigation.slice(0, 5).map((item) => <Link key={item.href} href={item.href} className={pathname === item.href ? 'active' : ''} onClick={() => setMenuOpen(false)} aria-label={collapsed ? item.label : undefined} title={collapsed ? item.label : undefined}><Icon name={item.icon} /><span>{item.label}</span></Link>)}<p>Account</p>{navigation.slice(5).map((item) => <Link key={item.href} href={item.href} className={pathname === item.href ? 'active' : ''} onClick={() => setMenuOpen(false)} aria-label={collapsed ? item.label : undefined} title={collapsed ? item.label : undefined}><Icon name={item.icon} /><span>{item.label}</span></Link>)}</nav>
+      <details className="dashboard-sidebar-notifications"><summary><Icon name="bell" /><span>Notifications ({notifications.length})</span></summary><div>{notifications.length ? notifications.map(item => <Link href={item.href} key={item.id} onClick={() => setMenuOpen(false)}><strong>{item.title}</strong><small>{item.message}</small></Link>) : <p>You are all caught up.</p>}</div></details>
+      <div className="dashboard-sidebar-signout"><SignOutButton /></div>
       <div className="dashboard-user"><span>{initials}</span><div><strong>{affiliate.firstName} {affiliate.lastName}</strong><small>{affiliate.email}</small></div></div>
     </aside>
-    <div className="dashboard-workspace"><header className="dashboard-topbar"><div><span>Affiliate workspace</span><strong>{title}</strong></div><div className="dashboard-top-actions"><div className="notification-shell" ref={notificationRef}><button className="dashboard-icon-button" aria-label="Notifications" aria-expanded={notificationsOpen} aria-controls="affiliate-notifications" onClick={() => { const next = !notificationsOpen; setNotificationsOpen(next); if (next) { setHasUnread(false); window.localStorage.setItem('affiliate-notifications-seen', notificationKey); } }}><Icon name="bell" />{hasUnread ? <i /> : null}</button>{notificationsOpen ? <section className="notification-popover" id="affiliate-notifications"><header><div><strong>Notifications</strong><span>Live account updates</span></div><b>{notifications.length}</b></header>{notifications.length ? <div className="notification-list">{notifications.map((item) => <Link href={item.href} key={item.id} onClick={() => setNotificationsOpen(false)}><i className={`tone-${item.tone}`} /><span><strong>{item.title}</strong><small>{item.message}</small></span></Link>)}</div> : <div className="notification-empty"><strong>You are all caught up</strong><span>Important account and payout updates will appear here.</span></div>}</section> : null}</div><ThemeToggle /><SignOutButton /></div></header><main className="dashboard-content">{children}</main></div>
+    <div className="dashboard-workspace">
+      <header className="dashboard-topbar">
+        <WorkspaceSearch items={navigation} onNavigate={(href) => router.push(href)} />
+        <div className="dashboard-top-actions">
+          <ThemeToggle />
+          <Link className="dashboard-settings-shortcut" href="/dashboard/settings" aria-label="Profile and settings"><Icon name="settings" /></Link>
+          <AccountTray name={affiliate.firstName + ' ' + affiliate.lastName} email={affiliate.email} image={affiliate.profileImageUrl}>
+            <Link href="/dashboard/settings"><Icon name="settings" />Profile and settings</Link>
+            <details className="dashboard-account-notifications"><summary>Notifications ({notifications.length})</summary>
+              {notifications.length ? notifications.map((item) => <Link key={item.id} href={item.href}><strong>{item.title}</strong><small>{item.message}</small></Link>) : <p>You are all caught up.</p>}
+            </details>
+            <SignOutButton />
+          </AccountTray>
+        </div>
+      </header>
+      <main className="dashboard-content">{children}</main>
+    </div>
   </div>;
 }

@@ -26,6 +26,7 @@ model affiliate_waitlist_entries {
 }
 
 model affiliate_accounts {
+  profileImageUrl String? @db.VarChar(700)
   id                  Int                             @id @default(autoincrement())
   pidAffiliate        String                          @unique @db.VarChar(80)
   emailHash           String                          @unique @db.Char(64)

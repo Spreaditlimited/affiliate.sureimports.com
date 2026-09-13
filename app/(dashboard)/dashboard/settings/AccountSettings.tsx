@@ -6,9 +6,11 @@ import { useState, type FormEvent } from 'react';
 import { CountrySelect } from '@/app/components/CountrySelect';
 import { PasswordInput } from '@/app/components/PasswordInput';
 
+import ProfilePhoto from './ProfilePhoto';
+
 type Notice = { tone: 'success' | 'error'; text: string } | null;
 type Session = { pidSession: string; current: boolean; createdLabel: string; lastSeenLabel: string; expiresLabel: string };
-type AffiliateProfile = { firstName: string; lastName: string; email: string; phone: string; country: string; referralCode: string };
+type AffiliateProfile = { profileImageUrl?: string | null; firstName: string; lastName: string; email: string; phone: string; country: string; referralCode: string };
 
 async function send(endpoint: string, method: 'PATCH' | 'DELETE', payload: unknown) {
   try {
@@ -82,6 +84,7 @@ export function AccountSettings({ profile, sessions }: { profile: AffiliateProfi
   return <div className="account-settings-grid">
     <section className="dashboard-panel account-settings-panel">
       <header><div><span>Profile information</span><small>Encrypted personal information</small></div><b>Verified email</b></header>
+      <ProfilePhoto imageUrl={profile.profileImageUrl} name={`${profile.firstName} ${profile.lastName}`} />
       <form className="settings-form" onSubmit={updateProfile}>
         <div className="settings-form-grid"><label><span>First name</span><input name="firstName" defaultValue={profile.firstName} autoComplete="given-name" minLength={2} maxLength={60} required /></label><label><span>Last name</span><input name="lastName" defaultValue={profile.lastName} autoComplete="family-name" minLength={2} maxLength={60} required /></label></div>
         <label><span>Email address</span><input value={profile.email} disabled readOnly aria-describedby="email-help" /><small id="email-help">Contact support to change your verified email address.</small></label>

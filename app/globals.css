@@ -847,3 +847,56 @@ html.dark .auth-page { --background:225 11% 7%;--foreground:228 24% 96%;--card:2
 .auth-page .auth-submit { font-size:15px;border-radius:8px;box-shadow:0 2px 5px rgb(0 0 0 / 12%); }
 .auth-page .auth-switch { font-size:14px; }
 .auth-page .auth-legal { font-size:12px;line-height:1.7;margin-top:16px; }
+/* Shared workspace chrome: 90px header, left navigation, right account tray. */
+.affiliate-dashboard .dashboard-sidebar { width:236px; }
+.affiliate-dashboard .dashboard-workspace { margin-left:236px; }
+.affiliate-dashboard.sidebar-collapsed .dashboard-sidebar { width:78px; }
+.affiliate-dashboard.sidebar-collapsed .dashboard-workspace { margin-left:78px; }
+.affiliate-dashboard .dashboard-topbar { height:90px; padding:20px 28px 20px 36px; gap:20px; }
+.affiliate-dashboard .dashboard-topbar > div:first-child { display:block; min-width:0; }
+.affiliate-dashboard .dashboard-top-actions { flex:none; gap:23px; }
+.dashboard-settings-shortcut { display:grid; place-items:center; width:52px; height:50px; border-radius:19px; background:hsl(var(--secondary)); }
+.dashboard-settings-shortcut svg,.dashboard-navigation-close svg,.dashboard-top-actions dialog svg { width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.7; }
+.dashboard-navigation-close { display:none; }
+.dashboard-account-notifications { font-size:14px; }
+.dashboard-account-notifications summary { padding:12px; cursor:pointer; }
+.dashboard-account-notifications a { display:grid; gap:6px; padding:12px; border-top:1px solid hsl(var(--border)); }
+.dashboard-account-notifications small { font-size:12px; color:hsl(var(--muted-foreground)); line-height:1.5; }
+@media(max-width:1023px) {
+ .affiliate-dashboard .dashboard-sidebar,.affiliate-dashboard.sidebar-collapsed .dashboard-sidebar { width:280px; max-width:calc(100vw - 32px); transform:translateX(-100%); visibility:hidden; z-index:70; }
+ .affiliate-dashboard .dashboard-sidebar.is-open { transform:translateX(0); visibility:visible; }
+ .affiliate-dashboard .dashboard-workspace,.affiliate-dashboard.sidebar-collapsed .dashboard-workspace { margin-left:0; }
+ .affiliate-dashboard .dashboard-topbar { height:90px; padding:20px 16px 20px 72px; gap:10px; }
+ .affiliate-dashboard .dashboard-top-actions { gap:10px; }
+ .affiliate-dashboard .dashboard-mobile-menu { display:grid; position:fixed; z-index:50; top:23px; left:16px; width:44px; height:44px; }
+ .affiliate-dashboard .dashboard-mobile-menu.is-open { visibility:hidden; }
+ .affiliate-dashboard .dashboard-scrim { display:block; position:fixed; inset:0; z-index:60; background:#0008; border:0; }
+ .affiliate-dashboard .dashboard-collapse-button,.dashboard-settings-shortcut { display:none; }
+ .affiliate-dashboard .dashboard-navigation-close { display:grid; place-items:center; width:40px; height:40px; flex:none; border:0; background:transparent; color:inherit; margin-right:16px; }
+ .affiliate-dashboard .dashboard-brand,.affiliate-dashboard.sidebar-collapsed .dashboard-brand { width:auto; flex:1; padding-left:20px; opacity:1; pointer-events:auto; }
+ .affiliate-dashboard.sidebar-collapsed .dashboard-sidebar nav { padding:23px 14px; }
+ .affiliate-dashboard.sidebar-collapsed .dashboard-sidebar nav > p { height:auto; opacity:1; margin:18px 11px 8px; }
+ .affiliate-dashboard.sidebar-collapsed .dashboard-sidebar nav a { justify-content:flex-start; padding:0 12px; }
+ .affiliate-dashboard.sidebar-collapsed .dashboard-sidebar nav a span { width:auto; opacity:1; overflow:visible; }
+}
+
+@media(min-width:1024px) {
+ .affiliate-dashboard .dashboard-sidebar { overflow:visible; }
+ .affiliate-dashboard .dashboard-brand-row { height:90px; }
+ .affiliate-dashboard .dashboard-collapse-button { position:absolute; top:25px; right:-20px; width:40px; height:40px; margin:0; border-radius:50%; background:hsl(var(--card)); border:1px solid hsl(var(--border)); }
+ .affiliate-dashboard.sidebar-collapsed .dashboard-collapse-button { margin:0; }
+}
+
+.dashboard-sidebar-signout { padding:12px; }
+.dashboard-sidebar-signout button { width:100%; min-height:44px; }
+
+@media(min-width:1024px) { .sidebar-collapsed .dashboard-sidebar-signout button { padding:10px; min-width:0; } .sidebar-collapsed .dashboard-sidebar-signout button span { display:none; } }
+
+.dashboard-sidebar-notifications { position:relative; padding:0 12px; font-size:13px; }
+.dashboard-sidebar-notifications summary { display:flex; align-items:center; gap:10px; cursor:pointer; min-height:44px; list-style:none; }
+.dashboard-sidebar-notifications summary::-webkit-details-marker { display:none; }
+.dashboard-sidebar-notifications svg { width:20px; height:20px; flex:none; fill:none; stroke:currentColor; stroke-width:1.7; }
+.dashboard-sidebar-notifications > div { max-height:240px; overflow:auto; padding:12px; background:hsl(var(--card)); border:1px solid hsl(var(--border)); border-radius:8px; }
+.dashboard-sidebar-notifications a { display:grid; gap:8px; padding:10px 0; }
+.dashboard-sidebar-notifications small { color:hsl(var(--muted-foreground)); line-height:1.5; }
+@media(min-width:1024px) { .sidebar-collapsed .dashboard-sidebar-notifications summary { justify-content:center; } .sidebar-collapsed .dashboard-sidebar-notifications summary span { display:none; } .sidebar-collapsed .dashboard-sidebar-notifications > div { position:absolute; bottom:0; left:78px; width:280px; } }
