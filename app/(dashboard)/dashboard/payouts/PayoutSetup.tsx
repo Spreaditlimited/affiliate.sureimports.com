@@ -1,4 +1,5 @@
 'use client';
+import { useToastNotice } from '@/lib/useToastNotice';
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -57,7 +58,7 @@ export function PayoutSetup({ accounts, available }: { accounts: Account[]; avai
   const [activeMethod, setActiveMethod] = useState<Method>('NGN');
   const [banks, setBanks] = useState<Bank[]>([]);
   const [banksLoading, setBanksLoading] = useState(true);
-  const [banksError, setBanksError] = useState('');
+  const [banksError, setBanksError] = useToastNotice('error');
   const [bankCode, setBankCode] = useState(ngnAccount?.bankCode || '');
   const [accountNumber, setAccountNumber] = useState('');
   const [accountName, setAccountName] = useState('');
@@ -67,8 +68,8 @@ export function PayoutSetup({ accounts, available }: { accounts: Account[]; avai
   const [usdOtp, setUsdOtp] = useState('');
   const [usdOtpSent, setUsdOtpSent] = useState(false);
   const [busy, setBusy] = useState('');
-  const [notice, setNotice] = useState('');
-  const [error, setError] = useState('');
+  const [notice, setNotice] = useToastNotice('success');
+  const [error, setError] = useToastNotice('error');
   const bankName = banks.find((bank) => bank.code === bankCode)?.name || ngnAccount?.bankName || '';
 
   useEffect(() => {

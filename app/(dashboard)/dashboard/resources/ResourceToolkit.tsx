@@ -1,4 +1,5 @@
 'use client';
+import { notify } from '@/lib/useToastNotice';
 
 import Image from 'next/image';
 import { useState } from 'react';
@@ -20,8 +21,8 @@ const campaigns = [
 function CopyButton({ value, label = 'Copy' }: { value: string; label?: string }) {
   const [state, setState] = useState<'idle' | 'copied' | 'error'>('idle');
   async function copy() {
-    try { await navigator.clipboard.writeText(value); setState('copied'); }
-    catch { setState('error'); }
+    try { await navigator.clipboard.writeText(value); setState('copied'); notify('success', 'Copied to your clipboard.'); }
+    catch { setState('error'); notify('error', 'Unable to copy. Select the text and copy it manually.'); }
     window.setTimeout(() => setState('idle'), 1800);
   }
   return <button type="button" onClick={copy}>{state === 'copied' ? 'Copied' : state === 'error' ? 'Copy failed' : label}</button>;
@@ -38,7 +39,7 @@ export function ResourceToolkit({ code, services }: { code: string; services: Se
       await navigator.share({ title: 'Sure Imports', text: 'Discover Sure Imports through my referral link.', url: link }).catch(() => undefined);
       return;
     }
-    await navigator.clipboard.writeText(link).catch(() => undefined);
+    try { await navigator.clipboard.writeText(link); notify('success','Referral link copied.'); } catch { notify('error','Unable to copy the link. Please copy it manually.'); }
   }
 
   return <div className="resource-workspace">

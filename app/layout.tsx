@@ -5,6 +5,7 @@ import Script from 'next/script';
 import { CookieNotice } from '@/app/components/CookieNotice';
 import { ThemeProvider } from '@/app/components/ThemeProvider';
 import './globals.css';
+import ToastHost from '@/app/components/ToastHost';
 
 const inter = Inter({ subsets: ['latin'], display: 'swap' });
 const gaMeasurementId =
@@ -92,6 +93,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <ThemeProvider>{children}</ThemeProvider>
         <CookieNotice />
+        <ToastHost />
         <GoogleAnalytics gaId={gaMeasurementId} />
       </body>
     </html>

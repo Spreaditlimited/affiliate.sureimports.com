@@ -1,4 +1,5 @@
 'use client';
+import { useToastResult } from '@/lib/useToastNotice';
 
 import { useRouter } from 'next/navigation';
 import { useState, type FormEvent } from 'react';
@@ -10,9 +11,11 @@ type Session = { pidSession: string; current: boolean; createdLabel: string; las
 type AffiliateProfile = { firstName: string; lastName: string; email: string; phone: string; country: string; referralCode: string };
 
 async function send(endpoint: string, method: 'PATCH' | 'DELETE', payload: unknown) {
+  try {
   const response = await fetch(endpoint, { method, headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) });
   const result = await response.json().catch(() => ({ message: 'Something went wrong. Please try again.' }));
   return { ok: response.ok, message: String(result.message || 'Something went wrong. Please try again.') };
+  } catch { return {ok:false, message:'Unable to connect. Check your connection and try again.'}; }
 }
 
 function Feedback({ notice }: { notice: Notice }) {
@@ -24,9 +27,9 @@ export function AccountSettings({ profile, sessions }: { profile: AffiliateProfi
   const [profileBusy, setProfileBusy] = useState(false);
   const [passwordBusy, setPasswordBusy] = useState(false);
   const [sessionBusy, setSessionBusy] = useState('');
-  const [profileNotice, setProfileNotice] = useState<Notice>(null);
-  const [passwordNotice, setPasswordNotice] = useState<Notice>(null);
-  const [sessionNotice, setSessionNotice] = useState<Notice>(null);
+  const [profileNotice, setProfileNotice] = useToastResult();
+  const [passwordNotice, setPasswordNotice] = useToastResult();
+  const [sessionNotice, setSessionNotice] = useToastResult();
 
   async function updateProfile(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
