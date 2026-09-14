@@ -19,7 +19,23 @@ export function isTrustedRequest(request: NextRequest) {
   if (fetchSite && !['same-origin', 'same-site', 'none'].includes(fetchSite)) return false;
   const origin = request.headers.get('origin');
   if (!origin) return true;
-  return origin === new URL(request.url).origin;
+  const requestUrl = new URL(request.url);
+  if (process.env.NODE_ENV !== 'production') {
+    // Next dev can construct request.url using its bind address (0.0.0.0).
+    // Check the browser's exact Host and port, never forwarded host headers.
+    const host = request.headers.get('host');
+    if (host) {
+      try {
+        const browserUrl = new URL(requestUrl.protocol + '//' + host);
+        if (['localhost', '127.0.0.1', '[::1]', '192.168.1.173'].includes(browserUrl.hostname)) {
+          return origin === browserUrl.origin;
+        }
+      } catch {
+        return false;
+      }
+    }
+  }
+  return origin === requestUrl.origin;
 }
 
 export function noStoreJson(body: unknown, status = 200) {
