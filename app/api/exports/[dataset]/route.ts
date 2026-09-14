@@ -1,3 +1,4 @@
+import { refundDeductionsByConversion } from '@/lib/refunds/affiliate-balances';
 import { currentAffiliate } from '@/lib/auth/session';
 import { getShippingOpportunityExport } from '@/lib/dashboard/shipping-opportunities';
 import { prisma } from '@/lib/prisma';
@@ -26,14 +27,14 @@ export async function GET(_request: Request, { params }: { params: Promise<{ dat
   let rows: unknown[][];
   if (dataset === 'referrals') {
     const records = await prisma.affiliate_referrals.findMany({
-      where: { affiliateId: affiliate.id },
-      select: { pidReferral: true, landingPath: true, source: true, firstTouchAt: true, lastTouchAt: true, convertedAt: true },
+      where: { affiliateId: affiliate.id, customerReference: { not: null } },
+      select: { pidReferral: true, landingPath: true, source: true, firstTouchAt: true, lastTouchAt: true, claimedAt: true, convertedAt: true, _count: { select: { conversions: { where: { status: { not: 'VOIDED' } } } } } },
       orderBy: { firstTouchAt: 'desc' },
       take: MAX_EXPORT_ROWS,
     });
     rows = [
-      ['Referral ID', 'Landing page', 'Source', 'First visit', 'Last visit', 'Status', 'Converted at'],
-      ...records.map((item) => [item.pidReferral, item.landingPath, item.source || 'Direct', item.firstTouchAt, item.lastTouchAt, item.convertedAt ? 'Converted' : 'Visited', item.convertedAt]),
+      ['Referral ID', 'Landing page', 'Source', 'First visit', 'Last visit', 'Status', 'Converted at', 'Linked on'],
+      ...records.map((item) => [item.pidReferral, item.landingPath, item.source || 'Direct', item.firstTouchAt, item.lastTouchAt, item._count.conversions > 0 ? 'Purchased' : 'Registered', item.convertedAt, item.claimedAt]),
     ];
   } else if (dataset === 'earnings') {
     const records = await prisma.affiliate_conversions.findMany({
@@ -42,9 +43,10 @@ export async function GET(_request: Request, { params }: { params: Promise<{ dat
       orderBy: { createdAt: 'desc' },
       take: MAX_EXPORT_ROWS,
     });
+    const deductions = await refundDeductionsByConversion(affiliate.id, records.map(item => item.id));
     rows = [
-      ['Conversion ID', 'Date', 'Service', 'Order reference', 'Payment currency', 'Gross payment', 'Eligible amount', 'Commission currency', 'Commission', 'Status'],
-      ...records.map((item) => [item.pidConversion, item.createdAt, item.service.displayName, item.externalOrderReference, item.paymentCurrency, item.grossAmount, item.eligibleAmount, item.commissionCurrency, item.commissionAmount, item.status]),
+      ['Conversion ID', 'Date', 'Service', 'Order reference', 'Payment currency', 'Gross payment', 'Eligible amount', 'Commission currency', 'Net commission', 'Status', 'Original commission', 'Refund deduction'],
+      ...records.map((item) => [item.pidConversion, item.createdAt, item.service.displayName, item.externalOrderReference, item.paymentCurrency, item.grossAmount, item.eligibleAmount, item.commissionCurrency, item.status === 'VOIDED' ? 0 : Math.max(0, Number(item.commissionAmount) - (deductions.get(item.id) || 0)), item.status, item.commissionAmount, deductions.get(item.id) || 0]),
     ];
   } else if (dataset === 'payouts') {
     const records = await prisma.affiliate_payouts.findMany({

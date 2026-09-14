@@ -1,3 +1,4 @@
+import { refundCommissionDeductions, refundDeductionsByConversion } from '@/lib/refunds/affiliate-balances';
 import 'server-only';
 import { prisma } from '@/lib/prisma';
 import { publicPayoutAccount } from '@/lib/payouts';
@@ -9,8 +10,12 @@ function safePage(page: number) {
 }
 
 export async function getDashboardOverview(affiliateId: number) {
-  const [referrals, conversions, available, pending, paid, recent, services, payoutAccounts] = await Promise.all([
-    prisma.affiliate_referrals.count({ where: { affiliateId } }),
+  const refundDeduction = await refundCommissionDeductions(affiliateId);
+  const [linkVisits, referrals, purchasingReferrals, conversions, available, pending, paid, recent, services, payoutAccounts] = await Promise.all([
+    // Imported LineScout customer claims are not website link visits.
+    prisma.affiliate_referrals.count({ where: { affiliateId, OR: [{ source: null }, { source: { not: 'LINESCOUT' } }] } }),
+    prisma.affiliate_referrals.count({ where: { affiliateId, customerReference: { not: null } } }),
+    prisma.affiliate_referrals.count({ where: { affiliateId, customerReference: { not: null }, conversions: { some: { status: { not: 'VOIDED' } } } } }),
     prisma.affiliate_conversions.count({ where: { affiliateId, status: { not: 'VOIDED' } } }),
     prisma.affiliate_conversions.groupBy({ by: ['commissionCurrency'], where: { affiliateId, status: 'AVAILABLE', payoutItem: null }, _sum: { commissionAmount: true } }),
     prisma.affiliate_conversions.groupBy({ by: ['commissionCurrency'], where: { affiliateId, status: 'PENDING' }, _sum: { commissionAmount: true } }),
@@ -20,40 +25,45 @@ export async function getDashboardOverview(affiliateId: number) {
     prisma.affiliate_payout_accounts.count({ where: { affiliateId, status: 'VERIFIED' } }),
   ]);
 
+  const recentDeductions = await refundDeductionsByConversion(affiliateId, recent.map(item => item.id));
   const amountFor = (rows: Array<{ commissionCurrency?: string; currency?: string; _sum: { commissionAmount?: unknown; amount?: unknown } }>, currency: string) => {
     const row = rows.find((item) => (item.commissionCurrency ?? item.currency) === currency);
     return Number(row?._sum.commissionAmount ?? row?._sum.amount ?? 0);
   };
 
   return {
-    totalClicks: referrals,
+    linkVisits,
+    totalReferrals: referrals,
+    purchasingReferrals,
     conversions,
-    conversionRate: referrals > 0 ? (conversions / referrals) * 100 : 0,
+    conversionRate: referrals > 0 ? (purchasingReferrals / referrals) * 100 : 0,
     payoutAccounts,
     balances: {
-      NGN: { available: amountFor(available, 'NGN'), pending: amountFor(pending, 'NGN'), paid: amountFor(paid, 'NGN') },
-      USD: { available: amountFor(available, 'USD'), pending: amountFor(pending, 'USD'), paid: amountFor(paid, 'USD') },
+      NGN: { available: Math.max(0, amountFor(available, 'NGN') - refundDeduction('NGN')), pending: Math.max(0, amountFor(pending, 'NGN') - refundDeduction('NGN', 'PENDING')), paid: amountFor(paid, 'NGN') },
+      USD: { available: Math.max(0, amountFor(available, 'USD') - refundDeduction('USD')), pending: Math.max(0, amountFor(pending, 'USD') - refundDeduction('USD', 'PENDING')), paid: amountFor(paid, 'USD') },
     },
-    recent: recent.map((item) => ({ id: item.pidConversion, service: item.service.displayName, reference: item.externalOrderReference, currency: item.commissionCurrency, commission: Number(item.commissionAmount), status: item.status, date: item.createdAt })),
+    recent: recent.map((item) => ({ id: item.pidConversion, service: item.service.displayName, reference: item.externalOrderReference, currency: item.commissionCurrency, commission: item.status === 'VOIDED' ? 0 : Math.max(0, Number(item.commissionAmount) - (recentDeductions.get(item.id) || 0)), status: item.status, date: item.createdAt })),
     services: services.map((service) => ({ key: service.serviceKey, name: service.displayName, type: service.commissionType, percentageRate: service.percentageRate ? Number(service.percentageRate) : null, basis: service.eligibleAmountBasis, recurring: service.recurring, rates: service.currencyRates.map((rate) => ({ currency: rate.currency, fixedAmount: rate.fixedAmount ? Number(rate.fixedAmount) : null })), unitRates: service.unitRates.map((rate) => ({ currency: rate.currency, billingUnit: rate.billingUnit, unitRate: Number(rate.unitRate), destinationCountry: rate.destinationCountry, shippingMode: rate.shippingMode })), eventRules: service.eventRules.map((rule) => ({ key: rule.eventKey, name: rule.displayName, percentageRate: Number(rule.percentageRate || 0) })) })),
   };
 }
 
 export async function getReferralData(affiliateId: number, requestedPage = 1) {
-  const [total, converted] = await Promise.all([
-    prisma.affiliate_referrals.count({ where: { affiliateId } }),
-    prisma.affiliate_referrals.count({ where: { affiliateId, convertedAt: { not: null } } }),
+  const [linkVisits, total, converted] = await Promise.all([
+    // Imported LineScout customer claims are not website link visits.
+    prisma.affiliate_referrals.count({ where: { affiliateId, OR: [{ source: null }, { source: { not: 'LINESCOUT' } }] } }),
+    prisma.affiliate_referrals.count({ where: { affiliateId, customerReference: { not: null } } }),
+    prisma.affiliate_referrals.count({ where: { affiliateId, customerReference: { not: null }, conversions: { some: { status: { not: 'VOIDED' } } } } }),
   ]);
   const page = Math.min(safePage(requestedPage), Math.max(1, Math.ceil(total / DASHBOARD_PAGE_SIZE)));
   const referrals = await prisma.affiliate_referrals.findMany({
-    where: { affiliateId },
-    select: { pidReferral: true, landingPath: true, source: true, firstTouchAt: true, lastTouchAt: true, convertedAt: true },
+    where: { affiliateId, customerReference: { not: null } },
+    select: { pidReferral: true, landingPath: true, source: true, firstTouchAt: true, lastTouchAt: true, claimedAt: true, convertedAt: true, _count: { select: { conversions: { where: { status: { not: 'VOIDED' } } } } } },
     orderBy: { firstTouchAt: 'desc' },
     skip: (page - 1) * DASHBOARD_PAGE_SIZE,
     take: DASHBOARD_PAGE_SIZE,
   });
 
-  return { total, converted, referrals, page, pageSize: DASHBOARD_PAGE_SIZE };
+  return { linkVisits, total, converted, referrals, page, pageSize: DASHBOARD_PAGE_SIZE };
 }
 
 export async function getEarningsData(affiliateId: number, requestedPage = 1) {
@@ -74,8 +84,14 @@ export async function getEarningsData(affiliateId: number, requestedPage = 1) {
     take: DASHBOARD_PAGE_SIZE,
   });
 
+  const [refundDeduction, conversionDeductions, processing] = await Promise.all([
+    refundCommissionDeductions(affiliateId),
+    refundDeductionsByConversion(affiliateId, conversions.map(item => item.id)),
+    prisma.affiliate_payouts.groupBy({ by: ['currency'], where: { affiliateId, status: { in: ['REQUESTED', 'PROCESSING', 'OTP_REQUIRED'] } }, _sum: { amount: true } }),
+  ]);
   return {
-    totals: totals.map((item) => ({ currency: item.commissionCurrency, status: item.status, amount: Number(item._sum.commissionAmount ?? 0) })),
+    totals: totals.map((item) => ({ currency: item.commissionCurrency, status: item.status, amount: Math.max(0, Number(item._sum.commissionAmount ?? 0) - (['AVAILABLE','PENDING'].includes(item.status) ? refundDeduction(item.commissionCurrency, item.status) : 0)) })),
+    processing: processing.map(item => ({ currency: item.currency, amount: Number(item._sum.amount ?? 0) })),
     total: conversionCount,
     page,
     pageSize: DASHBOARD_PAGE_SIZE,
@@ -86,7 +102,9 @@ export async function getEarningsData(affiliateId: number, requestedPage = 1) {
       paymentCurrency: item.paymentCurrency,
       paymentAmount: Number(item.grossAmount),
       commissionCurrency: item.commissionCurrency,
-      commissionAmount: Number(item.commissionAmount),
+      originalCommission: Number(item.commissionAmount),
+      refundDeduction: conversionDeductions.get(item.id) || 0,
+      commissionAmount: item.status === 'VOIDED' ? 0 : Math.max(0, Number(item.commissionAmount) - (conversionDeductions.get(item.id) || 0)),
       status: item.status,
       date: item.createdAt,
     })),
@@ -94,6 +112,7 @@ export async function getEarningsData(affiliateId: number, requestedPage = 1) {
 }
 
 export async function getPayoutData(affiliateId: number, requestedPage = 1) {
+  const refundDeduction = await refundCommissionDeductions(affiliateId);
   const [accounts, payoutCount, available] = await Promise.all([
     prisma.affiliate_payout_accounts.findMany({
       where: { affiliateId },
@@ -123,13 +142,14 @@ export async function getPayoutData(affiliateId: number, requestedPage = 1) {
     pageSize: DASHBOARD_PAGE_SIZE,
     payouts: payouts.map((item) => ({ ...item, amount: Number(item.amount) })),
     available: {
-      NGN: Number(available.find((item) => item.commissionCurrency === 'NGN')?._sum.commissionAmount ?? 0),
-      USD: Number(available.find((item) => item.commissionCurrency === 'USD')?._sum.commissionAmount ?? 0),
+      NGN: Math.max(0, Number(available.find((item) => item.commissionCurrency === 'NGN')?._sum.commissionAmount ?? 0) - refundDeduction('NGN')),
+      USD: Math.max(0, Number(available.find((item) => item.commissionCurrency === 'USD')?._sum.commissionAmount ?? 0) - refundDeduction('USD')),
     },
   };
 }
 
 export async function getDashboardNotifications(affiliateId: number) {
+  const refundDeduction = await refundCommissionDeductions(affiliateId);
   const [available, pending, payoutAccounts, payouts] = await Promise.all([
     prisma.affiliate_conversions.groupBy({
       by: ['commissionCurrency'],
@@ -158,7 +178,7 @@ export async function getDashboardNotifications(affiliateId: number) {
   }));
 
   for (const balance of available) {
-    const amount = Number(balance._sum.commissionAmount ?? 0);
+    const amount = Math.max(0, Number(balance._sum.commissionAmount ?? 0) - refundDeduction(balance.commissionCurrency));
     if (amount > 0) items.push({
       id: `available-${balance.commissionCurrency}-${amount}`,
       title: 'Earnings available',

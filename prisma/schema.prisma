@@ -227,6 +227,7 @@ model affiliate_referrals {
 }
 
 model affiliate_conversions {
+  refundAdjustments affiliate_refund_adjustments[]
   id                       Int                        @id @default(autoincrement())
   pidConversion            String                     @unique @db.VarChar(80)
   affiliateId              Int
@@ -407,6 +408,7 @@ model affiliate_payout_account_otps {
 }
 
 model affiliate_payouts {
+  refundAdjustments affiliate_refund_adjustments[]
   id                Int                        @id @default(autoincrement())
   pidPayout         String                     @unique @db.VarChar(80)
   affiliateId       Int
@@ -462,4 +464,19 @@ model affiliate_email_events {
 
   @@index([status, createdAt])
   @@index([recipientHash, createdAt])
+}
+
+model affiliate_refund_adjustments {
+  refundId     String   @db.VarChar(191)
+  conversionId Int
+  amount       Decimal  @db.Decimal(18, 2)
+  currency     String   @db.Char(3)
+  payoutId     Int?
+  createdAt    DateTime @default(now()) @db.DateTime(3)
+  conversion   affiliate_conversions @relation(fields: [conversionId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "affiliate_refund_adjustments_conversion_fk")
+  payout       affiliate_payouts? @relation(fields: [payoutId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "affiliate_refund_adjustments_payout_fk")
+
+  @@id([refundId, conversionId])
+  @@index([payoutId], map: "affiliate_refund_adjustments_payout")
+  @@index([conversionId], map: "affiliate_refund_adjustments_conversion")
 }

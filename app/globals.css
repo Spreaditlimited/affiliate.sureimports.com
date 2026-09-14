@@ -310,7 +310,7 @@ select.searchable-select-native { position: absolute !important; width: 1px !imp
 @media (max-width: 600px) {
   .site-header .nav-shell { gap: 12px; min-height: 80px; }
   .site-header .brand { flex-direction: column; align-items: flex-start; gap: 3px; min-width: 0; }
-  .site-header .logo { width: auto; height: 23px; }
+  .site-header .logo { width: auto; height: 32px; }
   .site-header .brand-divider { display: none; }
   .site-header .brand-product { font-size: 9px; letter-spacing: .14em; font-weight: 700; text-transform: uppercase; }
   .site-header .nav-actions { gap: 12px; flex-shrink: 0; }

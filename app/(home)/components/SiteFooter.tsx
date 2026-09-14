@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import OfficeLocations from '@/components/OfficeLocations';
 import Link from 'next/link';
 
 export function SiteFooter() {
@@ -24,6 +25,7 @@ export function SiteFooter() {
         </nav>
       </div>
     </div>
+    <div className="site-container"><OfficeLocations /></div>
     <div className="site-container footer-bottom">
       <span>© {new Date().getFullYear()} Sure Importers Limited</span>
       <span>Recommend responsibly. Earn transparently.</span>

@@ -1,3 +1,5 @@
+import { assertRefundsReconciled } from '@/lib/refunds/payout-guard';
+import { reconcileRefundCommissions } from '@/lib/refunds/commission-adjustments';
 import 'server-only';
 
 import { timingSafeEqual } from 'node:crypto';
@@ -434,9 +436,11 @@ export async function savePayoutAccount(input: {
 }
 
 export async function requestPayout(affiliateId: number, currencyInput: string) {
+  await reconcileRefundCommissions();
   const method = payoutMethod(currencyInput);
   return prisma.$transaction(
     async (tx) => {
+      await assertRefundsReconciled(tx, affiliateId, method.currency);
       const account = await tx.affiliate_payout_accounts.findUnique({
         where: {
           affiliateId_provider_currency: {
@@ -468,10 +472,11 @@ export async function requestPayout(affiliateId: number, currencyInput: string) 
         orderBy: { createdAt: 'asc' },
       });
       if (!conversions.length) throw new Error('There is no available balance to withdraw.');
+      const deductions = await tx.$queryRaw<{refundId:string;conversionId:number;amount:string}[]>`SELECT a.refundId,a.conversionId,a.amount FROM affiliate_refund_adjustments a JOIN affiliate_conversions c ON c.id=a.conversionId WHERE c.affiliateId=${affiliateId} AND a.currency=${method.currency} AND a.payoutId IS NULL AND (c.status IN ('AVAILABLE','RESERVED','PAID') OR (c.status='VOIDED' AND EXISTS (SELECT 1 FROM affiliate_payout_items i JOIN affiliate_payouts p ON p.id=i.payoutId WHERE i.conversionId=c.id AND p.status='PAID'))) ORDER BY a.refundId,a.conversionId FOR UPDATE`;
       const amount = conversions.reduce(
         (total, conversion) => total.add(conversion.commissionAmount),
         new Prisma.Decimal(0),
-      );
+      ).sub(deductions.reduce((total, row) => total.add(row.amount), new Prisma.Decimal(0)));
       if (amount.lte(0)) throw new Error('There is no available balance to withdraw.');
 
       const payout = await tx.affiliate_payouts.create({
@@ -491,6 +496,10 @@ export async function requestPayout(affiliateId: number, currencyInput: string) 
           },
         },
       });
+      for (const deduction of deductions) {
+        const claimed = await tx.$executeRaw`UPDATE affiliate_refund_adjustments SET payoutId=${payout.id} WHERE refundId=${deduction.refundId} AND conversionId=${deduction.conversionId} AND payoutId IS NULL`;
+        if (claimed !== 1) throw new Error('Refund adjustment changed. Refresh before requesting another payout.');
+      }
       const reserved = await tx.affiliate_conversions.updateMany({
         where: {
           id: { in: conversions.map((conversion) => conversion.id) },
