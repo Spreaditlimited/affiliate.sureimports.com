@@ -1,4 +1,6 @@
 :root {
+  --site-content-max: 1440px;
+  --site-content-gutter: 16px;
   --background: 36 35% 94%;
   --foreground: 225 11.1111% 7.0588%;
   --card: 0 0% 100%;
@@ -56,7 +58,9 @@ select.searchable-select-native { position: absolute !important; width: 1px !imp
 .searchable-select-options button { width: 100%; display: flex; align-items: center; padding: 10px 11px; border: 0; border-radius: 7px; background: transparent; color: hsl(var(--foreground)); font-size: 12px; font-weight: 600; text-align: left; cursor: pointer; }
 .searchable-select-options button:hover, .searchable-select-options button:focus-visible, .searchable-select-options button.selected { background: var(--indigo-soft); color: var(--indigo); outline: none; }
 .searchable-select-options p { margin: 0; padding: 13px 11px; color: hsl(var(--muted-foreground)); font-size: 12px; }
-.site-container { width: 100%; max-width: 1440px; margin-inline: auto; padding-inline: 32px; }
+.site-container { width: 100%; max-width: var(--site-content-max); margin-inline: auto; padding-inline: var(--site-content-gutter); }
+@media (min-width: 640px) { :root { --site-content-gutter: 24px; } }
+@media (min-width: 1024px) { :root { --site-content-gutter: 32px; } }
 
 .site-header { position: sticky; z-index: 50; top: 0; border-bottom: 1px solid hsl(var(--border) / .75); background: hsl(var(--background) / .86); backdrop-filter: blur(18px); }
 .nav-shell { height: 78px; display: flex; align-items: center; justify-content: space-between; gap: 30px; }
@@ -286,7 +290,6 @@ select.searchable-select-native { position: absolute !important; width: 1px !imp
 }
 
 @media (max-width: 820px) {
-  .site-container { padding-inline: 24px; }
   .footer-top { flex-wrap: wrap; }
   .footer-navigation { width: 100%; }
   .footer-links, .footer-policies { justify-content: flex-start; }
@@ -317,7 +320,6 @@ select.searchable-select-native { position: absolute !important; width: 1px !imp
 }
 
 @media (max-width: 580px) {
-  .site-container { padding-inline: 16px; }
   .nav-shell { height: 70px; }
   .logo { width: auto; height: 24px; }
   .brand-divider { height: 19px; margin-inline: 9px; }
