@@ -91,7 +91,8 @@ export default function RootLayout({
         />
       </head>
       <body className={inter.className}>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+        <Script src="https://www.sureimports.com/whatsapp-tracking.js" strategy="afterInteractive" />{children}</ThemeProvider>
         <CookieNotice />
         <ToastHost />
         <GoogleAnalytics gaId={gaMeasurementId} />
