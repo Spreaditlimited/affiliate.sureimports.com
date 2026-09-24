@@ -16,6 +16,7 @@ export function proxy(request: NextRequest) {
   if (
     PUBLIC_PAGES.some((route) => matchesRoute(pathname, route)) ||
     pathname === '/api/waitlist' ||
+    pathname === '/api/sureimports-newsletter' ||
     pathname.startsWith('/api/auth/') ||
     AUTH_PAGES.some((route) => pathname === route || pathname.startsWith(`${route}/`)) ||
     pathname.startsWith('/_next/') ||
